@@ -12,6 +12,7 @@ namespace Repository.Extensions
         #region Vehicle
         public struct DtoVehicle
         {
+            public int id {  get; set; }
             public string Plate_Number { get; set; }
             public string Make { get; set; }
             public string Model { get; set; }
@@ -26,6 +27,7 @@ namespace Repository.Extensions
             public DateTime Oil_Change { get; set; }
             public bool Status { get; set; }
             public string ImageUrl { get; set; }
+          
         }
 
         public static Vehicle ToVehicle(this DtoVehicle dtoVehicle)
@@ -47,7 +49,7 @@ namespace Repository.Extensions
                 Oil_Change = dtoVehicle.Oil_Change,
                 Status = dtoVehicle.Status,
                 ImageUrl = dtoVehicle.ImageUrl
-
+              
             };
 
             return vehicle;
@@ -99,5 +101,42 @@ namespace Repository.Extensions
         }
 
         #endregion
+
+        #region Maintenance
+        public struct DtoMaintenance
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Severity { get; set; }
+            public DateTime Date { get; set; }
+            public string Type { get; set; }
+            public int Category { get; set; }
+            public string Status { get; set; }
+            public string Description { get; set; }
+            public int VehicleId { get; set; }
+        }
+
+        public static Maintenance ToMaintenance(this DtoMaintenance dtoMaintenance)
+        {
+            Maintenance maintenance = new()
+
+            {
+                Id = dtoMaintenance.Id,
+                Name = dtoMaintenance.Name,
+                Severity = dtoMaintenance.Severity,
+                Date = dtoMaintenance.Date,
+                Type = dtoMaintenance.Type,
+                Category = dtoMaintenance.Category,
+                Status = dtoMaintenance.Status,
+                Description = dtoMaintenance.Description,
+                VehicleId = dtoMaintenance.VehicleId
+
+
+            };
+
+            return maintenance;
+        }
+        #endregion
+
     }
 }

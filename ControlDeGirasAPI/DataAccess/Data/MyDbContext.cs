@@ -18,5 +18,17 @@ namespace DataAccess.Data
         public DbSet<Vehicle> Vehicles { get; set; }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Maintenance> Maintenances { get; set; }
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Vehicle>()
+           .HasOne(e => e.Maintenance)
+           .WithOne(e => e.Vehicle)
+           .HasForeignKey<Maintenance>(e => e.VehicleId)
+           .IsRequired();
+        }
     }
 }
