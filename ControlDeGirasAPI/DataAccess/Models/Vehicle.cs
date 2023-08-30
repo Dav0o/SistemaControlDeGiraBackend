@@ -23,9 +23,7 @@ namespace DataAccess.Models
         public bool Status { get; set; }
         public string ImageUrl { get; set; }
 
-        // public Mantenimiento? Mantenimiento { get; set; } = default!;
-
-        // public int MantenimientoId { get; set; }
+        public Maintenance? Maintenance { get; set; }
 
     }
 }

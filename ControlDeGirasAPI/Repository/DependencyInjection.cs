@@ -18,6 +18,7 @@ namespace Repository
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGenericRepository<Vehicle>, GenericRepository<Vehicle>>();
+            services.AddScoped<IGenericRepository<Maintenance>, GenericRepository<Maintenance>>();
 
             return services;
         }
