@@ -36,6 +36,7 @@ namespace Repository.Extensions
             Vehicle vehicle = new()
 
             {
+                Id = dtoVehicle.Id,
                 Plate_Number = dtoVehicle.Plate_Number,
                 Make = dtoVehicle.Make,
                 Model = dtoVehicle.Model,
