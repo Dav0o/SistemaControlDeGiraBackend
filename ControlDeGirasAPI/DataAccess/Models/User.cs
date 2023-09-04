@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccess.Models.Relations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,5 +29,9 @@ namespace DataAccess.Models
         public string RefreshToken { get; set; } = string.Empty;
         public DateTime TokenCreated { get; set; }
         public DateTime TokenExpires { get; set; }
+
+        //Relations
+
+        public List<User_Role> user_Roles { get; set; }
     }
 }

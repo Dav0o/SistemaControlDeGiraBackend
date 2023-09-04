@@ -23,7 +23,7 @@ namespace DataAccess.Models
         public bool Status { get; set; }
         public string ImageUrl { get; set; }
 
-        public Maintenance? Maintenance { get; set; }
+        public List<Maintenance> maintenances { get; set; }
 
     }
 }

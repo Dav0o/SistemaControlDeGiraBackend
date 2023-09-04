@@ -59,10 +59,52 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("VehicleId")
-                        .IsUnique();
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("Maintenances");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Relations.User_Role", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("DataAccess.Models.User", b =>
@@ -189,17 +231,46 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Models.Maintenance", b =>
                 {
                     b.HasOne("DataAccess.Models.Vehicle", "Vehicle")
-                        .WithOne("Maintenance")
-                        .HasForeignKey("DataAccess.Models.Maintenance", "VehicleId")
+                        .WithMany("maintenances")
+                        .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("DataAccess.Models.Relations.User_Role", b =>
+                {
+                    b.HasOne("DataAccess.Models.Role", "Role")
+                        .WithMany("user_Roles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Models.User", "User")
+                        .WithMany("user_Roles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Role", b =>
+                {
+                    b.Navigation("user_Roles");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.User", b =>
+                {
+                    b.Navigation("user_Roles");
+                });
+
             modelBuilder.Entity("DataAccess.Models.Vehicle", b =>
                 {
-                    b.Navigation("Maintenance");
+                    b.Navigation("maintenances");
                 });
 #pragma warning restore 612, 618
         }

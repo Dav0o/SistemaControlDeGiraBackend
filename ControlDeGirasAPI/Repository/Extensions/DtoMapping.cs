@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using DataAccess.Models.Relations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Repository.Extensions
         #region Vehicle
         public struct DtoVehicle
         {
-            public int id {  get; set; }
+            public int Id {  get; set; }
             public string Plate_Number { get; set; }
             public string Make { get; set; }
             public string Model { get; set; }
@@ -60,6 +61,7 @@ namespace Repository.Extensions
 
         public struct DtoCreateUser
         {
+            public int Id { get; set; }
             public string Name { get; set; } 
 
             public string LastName1 { get; set; } 
@@ -87,6 +89,7 @@ namespace Repository.Extensions
         {
             User user = new()
             {
+                Id = dtoUser.Id,
                 Name = dtoUser.Name,
                 LastName1 = dtoUser.LastName1,
                 LastName2 = dtoUser.LastName2,
@@ -100,6 +103,28 @@ namespace Repository.Extensions
             return user;
         }
 
+        #endregion
+
+        #region Role
+
+        public struct DtoRole
+        {
+            public int Id { get; set; }
+            public string Name { get; set; } 
+
+            public string Description { get; set; }
+        }
+
+        public static Role ToRole(this DtoRole dtoRole)
+        {
+            Role role = new()
+            {
+                Id = dtoRole.Id,
+                Name = dtoRole.Name,
+                Description = dtoRole.Description,
+            };
+            return role;
+        }
         #endregion
 
         #region Maintenance
@@ -136,6 +161,27 @@ namespace Repository.Extensions
 
             return maintenance;
         }
+        #endregion
+
+        #region User_Rol
+
+        public struct DtoUserRole
+        {
+            public int UserId { get; set; }
+
+            public int RoleId { get; set; }
+        }
+
+        public static User_Role ToUserRole(this DtoUserRole request)
+        {
+            User_Role user_Role = new()
+            {
+                UserId = request.UserId,
+                RoleId = request.RoleId,
+            };
+            return user_Role;
+        }
+
         #endregion
 
     }

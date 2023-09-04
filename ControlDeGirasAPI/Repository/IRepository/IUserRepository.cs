@@ -20,13 +20,13 @@ namespace Repository.IRepository
         public Task<User> Delete(int id);
 
         public Task<object> Login(DtoUser request);
-        public Task<ActionResult<string>> RefreshToken();
+
+        public Task<User?> UpdateStatus(int id);
 
         //Queries
         public Task<List<User>> GetAll();
 
-        public Task<User> GetByEmail(string email);
-
+        public Task<User> GetById(int id);
 
     }
 }

@@ -33,7 +33,13 @@ namespace Repository
 
         public async Task<User> Create(DtoCreateUser request)
         {
+            var isExistsUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
 
+            if (isExistsUser != null)
+            {
+                return null;
+            }
+                
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             User user;
@@ -52,6 +58,11 @@ namespace Repository
         public async Task<object> Login(DtoUser request)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            if(user == null)
+            {
+                return null;
+            }
+
             if (user.Email != request.Email)
             {
                 return null;
@@ -64,8 +75,6 @@ namespace Repository
 
             string token = CreateToken(user);
 
-            //var refreshToken = GenerateRefreshToken();
-            //SetRefreshToken(refreshToken);
 
             return token;
         }
@@ -82,18 +91,6 @@ namespace Repository
             return users;
         }
 
-        public Task<User> GetByEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        
-
-        public Task<ActionResult<string>> RefreshToken()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task Update(DtoCreateUser request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -104,6 +101,7 @@ namespace Repository
             updateUser.PasswordHash = passwordHash;
             updateUser.PasswordSalt = passwordSalt;
 
+            _context.Users.Attach(updateUser);
             _context.Entry(updateUser).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
@@ -152,6 +150,23 @@ namespace Repository
             }
         }
 
+        public async Task<User?> UpdateStatus(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user != null) 
+            {
+                user.State = !(user.State);
+                _context.Users.Attach(user);
+                _context.Entry(user).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+            return user;
 
+        }
+
+        public Task<User> GetById(int id)
+        {
+            return _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

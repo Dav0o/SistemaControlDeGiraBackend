@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace Repository.IRepository
 {
-    public interface IVehicleRepository : IGenericRepository<Vehicle>
+    public interface IRoleRepository : IGenericRepository<Role>
     {
-        public Task<Vehicle> GetSpecificVehicle(int id);
     }
 }

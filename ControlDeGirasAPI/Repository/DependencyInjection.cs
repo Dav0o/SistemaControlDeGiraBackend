@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess.Models.Relations;
 
 namespace Repository
 {
@@ -19,6 +20,9 @@ namespace Repository
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGenericRepository<Vehicle>, GenericRepository<Vehicle>>();
             services.AddScoped<IGenericRepository<Maintenance>, GenericRepository<Maintenance>>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IGenericRepository<User_Role>, GenericRepository<User_Role>>();
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
 
             return services;
         }

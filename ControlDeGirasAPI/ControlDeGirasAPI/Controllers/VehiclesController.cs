@@ -1,6 +1,8 @@
 ﻿using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
+using Repository;
 using Repository.Internal.IGeneric;
+using Repository.IRepository;
 using static Repository.Extensions.DtoMapping;
 
 namespace ControlDeGirasAPI.Controllers
@@ -11,6 +13,7 @@ namespace ControlDeGirasAPI.Controllers
     {
 
         public readonly IGenericRepository<Vehicle> _vehicleRepository;
+        public readonly IVehicleRepository _repository;
 
         public VehiclesController(IGenericRepository<Vehicle> vehicleRepository)
 
@@ -24,17 +27,30 @@ namespace ControlDeGirasAPI.Controllers
         [HttpGet]
         public List<Vehicle> Get()
         {
-            return _vehicleRepository.GetAll().Where(vehicle => vehicle.Status).ToList();
+            return _vehicleRepository.GetAll().ToList();
 
         }
 
         // GET api/<VehiclesController>
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Vehicle>> GetSpecificVehicle(int id)
+        //{
+        //    var vehicle = await _repository.GetSpecificVehicle(id);
+        //    if (vehicle == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(vehicle);
+
+        //}
         [HttpGet("{id}")]
         public Vehicle GetById(int id)
         {
             return _vehicleRepository.GetByCondition(vehicle => vehicle.Id == id);
 
         }
+
 
 
         // POST api/<VehiclesController>
@@ -64,7 +80,7 @@ namespace ControlDeGirasAPI.Controllers
                 return NotFound();
             }
 
-            vehicle.Status = false;
+            vehicle.Status = !(vehicle.Status);
             _vehicleRepository.Update(vehicle);
 
             return NoContent();

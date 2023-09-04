@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repository;
 using Repository.IRepository;
 using static Repository.Extensions.DtoMapping;
 
@@ -27,7 +28,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<Object> Login(DtoUser request) //el ActionResult genera un null
+        public async Task<Object> Login(DtoUser request)
         {
             var user = await _userRepository.Login(request);
 
@@ -52,6 +53,19 @@ namespace ControlDeGirasAPI.Controllers
         {
             await _userRepository.Update(request);
             return NoContent();
+        }
+
+        [HttpPatch("{id}/disable")]
+        public IActionResult Disable(int id)
+        {
+            var user = _userRepository.UpdateStatus(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
         }
     }
 }
