@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,6 +28,20 @@ namespace DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "States",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_States", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -140,9 +154,103 @@ namespace DataAccess.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Requests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    ConsecutiveNumber = table.Column<int>(type: "int", nullable: false),
+                    ExecutingUnit = table.Column<int>(type: "int", nullable: false),
+                    TypeRequest = table.Column<string>(type: "longtext", nullable: false),
+                    Condition = table.Column<string>(type: "longtext", nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    BudgetUnid = table.Column<int>(type: "int", nullable: false),
+                    PersonsAmount = table.Column<int>(type: "int", nullable: false),
+                    Objective = table.Column<string>(type: "longtext", nullable: false),
+                    DepartureDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ArriveDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DepartureLocation = table.Column<string>(type: "longtext", nullable: false),
+                    DestinyLocation = table.Column<string>(type: "longtext", nullable: false),
+                    Itinerary = table.Column<string>(type: "longtext", nullable: false),
+                    Observations = table.Column<string>(type: "longtext", nullable: false),
+                    TypeOfVehicle = table.Column<string>(type: "longtext", nullable: false),
+                    ItsApprove = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ItsEndorse = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    InitialMileague = table.Column<int>(type: "int", nullable: false),
+                    FinalMileague = table.Column<int>(type: "int", nullable: false),
+                    VehicleId = table.Column<int>(type: "int", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Requests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Requests_Vehicles_VehicleId",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicles",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Processes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    StateId = table.Column<int>(type: "int", nullable: false),
+                    RequestId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Processes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Processes_Requests_RequestId",
+                        column: x => x.RequestId,
+                        principalTable: "Requests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Processes_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Processes_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Maintenances_VehicleId",
                 table: "Maintenances",
+                column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Processes_RequestId",
+                table: "Processes",
+                column: "RequestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Processes_StateId",
+                table: "Processes",
+                column: "StateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Processes_UserId",
+                table: "Processes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_VehicleId",
+                table: "Requests",
                 column: "VehicleId");
 
             migrationBuilder.CreateIndex(
@@ -158,16 +266,25 @@ namespace DataAccess.Migrations
                 name: "Maintenances");
 
             migrationBuilder.DropTable(
+                name: "Processes");
+
+            migrationBuilder.DropTable(
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
-                name: "Vehicles");
+                name: "Requests");
+
+            migrationBuilder.DropTable(
+                name: "States");
 
             migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Vehicles");
         }
     }
 }

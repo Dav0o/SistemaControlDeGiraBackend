@@ -16,19 +16,6 @@ namespace Repository
             _context = context;
         }
 
-        public async Task<Vehicle> GetSpecificVehicle(int id)
-        {
-            var vehicle = await _context.Vehicles.FindAsync(id);
-
-            //if (vehicle != null)
-            //{
-            //    await _context.Entry(vehicle)
-            //        .Collection(v => v.maintenances)
-            //        .LoadAsync();
-            //}
-
-            return vehicle;
-        }
     }
 }
 

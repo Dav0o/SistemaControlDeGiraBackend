@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230904012413_initial-migration")]
-    partial class initialmigration
+    [Migration("20230911173524_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,6 +67,35 @@ namespace DataAccess.Migrations
                     b.ToTable("Maintenances");
                 });
 
+            modelBuilder.Entity("DataAccess.Models.Process", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("RequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestId");
+
+                    b.HasIndex("StateId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Processes");
+                });
+
             modelBuilder.Entity("DataAccess.Models.Relations.User_Role", b =>
                 {
                     b.Property<int>("UserId")
@@ -86,6 +115,90 @@ namespace DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Request", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ArriveDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("BudgetUnid")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Condition")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ConsecutiveNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("DepartureDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("DepartureLocation")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DestinyLocation")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ExecutingUnit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FinalMileague")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InitialMileague")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Itinerary")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("ItsApprove")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("ItsEndorse")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Objective")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Observations")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("PersonsAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeOfVehicle")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TypeRequest")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Requests");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Role", b =>
@@ -108,6 +221,21 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.State", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("DataAccess.Models.User", b =>
@@ -242,6 +370,33 @@ namespace DataAccess.Migrations
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("DataAccess.Models.Process", b =>
+                {
+                    b.HasOne("DataAccess.Models.Request", "Request")
+                        .WithMany("Processes")
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Models.State", "State")
+                        .WithMany("Processes")
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Models.User", "User")
+                        .WithMany("Processes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Request");
+
+                    b.Navigation("State");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DataAccess.Models.Relations.User_Role", b =>
                 {
                     b.HasOne("DataAccess.Models.Role", "Role")
@@ -261,18 +416,41 @@ namespace DataAccess.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DataAccess.Models.Request", b =>
+                {
+                    b.HasOne("DataAccess.Models.Vehicle", "Vehicle")
+                        .WithMany("Requests")
+                        .HasForeignKey("VehicleId");
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Request", b =>
+                {
+                    b.Navigation("Processes");
+                });
+
             modelBuilder.Entity("DataAccess.Models.Role", b =>
                 {
                     b.Navigation("user_Roles");
                 });
 
+            modelBuilder.Entity("DataAccess.Models.State", b =>
+                {
+                    b.Navigation("Processes");
+                });
+
             modelBuilder.Entity("DataAccess.Models.User", b =>
                 {
+                    b.Navigation("Processes");
+
                     b.Navigation("user_Roles");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Vehicle", b =>
                 {
+                    b.Navigation("Requests");
+
                     b.Navigation("maintenances");
                 });
 #pragma warning restore 612, 618

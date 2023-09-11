@@ -25,6 +25,12 @@ namespace DataAccess.Data
 
         public DbSet<User_Role> UserRoles { get; set; }
 
+        public DbSet<Request> Requests { get; set; }
+
+        public DbSet<Process> Processes { get; set; }
+
+        public DbSet<State> States { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Vehicle -> Maintenance
@@ -49,6 +55,32 @@ namespace DataAccess.Data
                 .HasOne(ch => ch.Role)
                 .WithMany(h => h.user_Roles)
                 .HasForeignKey(ch => ch.RoleId);
+
+            //Request -> Vehicle
+
+            modelBuilder.Entity<Vehicle>()
+                .HasMany(e => e.Requests)
+                .WithOne(e => e.Vehicle)
+                .HasForeignKey(e => e.VehicleId);
+
+            //Process -> Request
+
+            modelBuilder.Entity<Request>()
+                .HasMany(r => r.Processes)
+                .WithOne(r => r.Request)
+                .HasForeignKey(r => r.RequestId);
+
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Processes)
+                .WithOne(u => u.User)
+                .HasForeignKey(u => u.UserId);
+
+            modelBuilder.Entity<State>()
+                .HasMany(s => s.Processes)
+                .WithOne(s => s.State)
+                .HasForeignKey(s => s.StateId);
+
         }
     }
 }

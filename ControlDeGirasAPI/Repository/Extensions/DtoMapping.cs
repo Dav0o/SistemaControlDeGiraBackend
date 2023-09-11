@@ -241,5 +241,151 @@ namespace Repository.Extensions
 
         #endregion
 
+        #region Request
+
+        public struct DtoRequestByUser
+        {
+            public int Id { get; set; }
+            public int ConsecutiveNumber { get; set; }
+
+            public int ExecutingUnit { get; set; }
+
+            public string TypeRequest { get; set; }
+
+            public string Condition { get; set; }
+
+            public int Priority { get; set; }
+
+            public int BudgetUnid { get; set; }
+
+            public int PersonsAmount { get; set; }
+
+            public string Objective { get; set; }
+
+            public DateTime DepartureDate { get; set; }
+
+            public DateTime ArriveDate { get; set; }
+
+            public string DepartureLocation { get; set; }
+
+            public string DestinyLocation { get; set; } 
+
+            public string Itinerary { get; set; }
+
+            public string Observations { get; set; }
+
+            public string TypeOfVehicle { get; set; } 
+        }
+
+        public static Request ToRequestByUser(this DtoRequestByUser dtoRequest)
+        {
+            Request newRequest = new()
+            {
+                Id = dtoRequest.Id,
+                ConsecutiveNumber = dtoRequest.ConsecutiveNumber,
+                ExecutingUnit = dtoRequest.ExecutingUnit,
+                TypeRequest = dtoRequest.TypeRequest,
+                Condition = dtoRequest.Condition,
+                Priority = dtoRequest.Priority,
+                BudgetUnid = dtoRequest.BudgetUnid,
+                PersonsAmount = dtoRequest.PersonsAmount,
+                Objective = dtoRequest.Objective,
+                DepartureDate = dtoRequest.DepartureDate,
+                ArriveDate = dtoRequest.ArriveDate,
+                DepartureLocation = dtoRequest.DepartureLocation,
+                DestinyLocation = dtoRequest.DestinyLocation,
+                Itinerary = dtoRequest.Itinerary,
+                Observations = dtoRequest.Observations,
+                TypeOfVehicle = dtoRequest.TypeOfVehicle
+            };
+            return newRequest;
+        }
+
+        public struct DtoRequest
+        {
+            public int Id { get; set; }
+            public int ConsecutiveNumber { get; set; }
+
+            public int ExecutingUnit { get; set; }
+
+            public string TypeRequest { get; set; }
+
+            public string Condition { get; set; }
+
+            public int Priority { get; set; }
+
+            public int BudgetUnid { get; set; }
+
+            public int PersonsAmount { get; set; }
+
+            public string Objective { get; set; }
+
+            public DateTime DepartureDate { get; set; }
+
+            public DateTime ArriveDate { get; set; }
+
+            public string DepartureLocation { get; set; }
+
+            public string DestinyLocation { get; set; }
+
+            public string Itinerary { get; set; }
+
+            public string Observations { get; set; }
+
+            public int InitialMileague { get; set; }
+
+            public int FinalMileague { get; set; }
+            public string TypeOfVehicle { get; set; }
+            public int VehicleId { get; set; }
+
+            
+        }
+
+        public static Request ToRequest(this  DtoRequest dtoRequest)
+        {
+            Request newRequest = new()
+            {
+                Id = dtoRequest.Id,
+                ConsecutiveNumber = dtoRequest.ConsecutiveNumber,
+                ExecutingUnit = dtoRequest.ExecutingUnit,
+                TypeRequest = dtoRequest.TypeRequest,
+                Condition = dtoRequest.Condition,
+                Priority = dtoRequest.Priority,
+                BudgetUnid = dtoRequest.BudgetUnid,
+                PersonsAmount = dtoRequest.PersonsAmount,
+                Objective = dtoRequest.Objective,
+                DepartureDate = dtoRequest.DepartureDate,
+                ArriveDate = dtoRequest.ArriveDate,
+                DepartureLocation = dtoRequest.DepartureLocation,
+                DestinyLocation = dtoRequest.DestinyLocation,
+                Itinerary = dtoRequest.Itinerary,
+                Observations = dtoRequest.Observations,
+                InitialMileague = dtoRequest.InitialMileague,
+                FinalMileague = dtoRequest.FinalMileague,
+                VehicleId = dtoRequest.VehicleId,
+                TypeOfVehicle = dtoRequest.TypeOfVehicle,
+            };
+            return newRequest;
+        }
+
+        public struct DtoEndorseRequest
+        {
+            public int Id {  get; set; }
+            
+            public int? VehicleId { get; set; }
+
+            public bool ItsEndorse { get; set; }
+        }
+
+        public struct DtoApproveRequest
+        {
+            public int Id { get; set; }
+
+            public bool ItsApprove { get; set; }
+
+
+        }
+        #endregion
+
     }
 }

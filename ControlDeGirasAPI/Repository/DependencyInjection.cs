@@ -23,6 +23,7 @@ namespace Repository
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IGenericRepository<User_Role>, GenericRepository<User_Role>>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IRequestRepository, RequestRepository>();
 
             return services;
         }

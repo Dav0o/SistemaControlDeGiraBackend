@@ -10,6 +10,5 @@ namespace Repository.IRepository
 {
     public interface IVehicleRepository : IGenericRepository<Vehicle>
     {
-        public Task<Vehicle> GetSpecificVehicle(int id);
     }
 }

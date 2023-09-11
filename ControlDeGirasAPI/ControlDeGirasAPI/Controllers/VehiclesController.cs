@@ -31,23 +31,11 @@ namespace ControlDeGirasAPI.Controllers
 
         }
 
-        // GET api/<VehiclesController>
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Vehicle>> GetSpecificVehicle(int id)
-        //{
-        //    var vehicle = await _repository.GetSpecificVehicle(id);
-        //    if (vehicle == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(vehicle);
-
-        //}
+        
         [HttpGet("{id}")]
         public Vehicle GetById(int id)
         {
-            return _vehicleRepository.GetByCondition(vehicle => vehicle.Id == id);
+            return _vehicleRepository.GetByCondition(vehicle => vehicle.Id == id, "maintenances");
 
         }
 

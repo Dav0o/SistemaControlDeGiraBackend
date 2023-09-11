@@ -33,5 +33,7 @@ namespace DataAccess.Models
         //Relations
 
         public List<User_Role> user_Roles { get; set; }
+
+        public List<Process> Processes { get; set; }
     }
 }

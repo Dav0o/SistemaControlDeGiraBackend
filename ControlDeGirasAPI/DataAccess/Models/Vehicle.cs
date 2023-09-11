@@ -25,5 +25,7 @@ namespace DataAccess.Models
 
         public List<Maintenance> maintenances { get; set; }
 
+        public List<Request> Requests { get; set; }
+
     }
 }

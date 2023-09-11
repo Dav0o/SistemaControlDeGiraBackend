@@ -109,12 +109,19 @@ namespace Repository
         //Methods
         private string CreateToken(User user)
         {
-            //Tiene que ir a BD y con un foreach agregar cada uno de los roles como claim
+            var roles = _context.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.Role.Name).ToList();
+            
             List<Claim> claims = new List<Claim> 
             {
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
 
             };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(

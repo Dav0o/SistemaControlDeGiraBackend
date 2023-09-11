@@ -19,6 +19,8 @@ namespace ControlDeGirasAPI.Controllers
             _userRepository = userRepository;
         }
 
+        
+
         [HttpPost]
         public async Task<ActionResult<User>> Create(DtoCreateUser request)
         {
