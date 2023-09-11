@@ -2,6 +2,8 @@
 using DataAccess.Models.Relations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,24 +15,58 @@ namespace Repository.Extensions
         #region Vehicle
         public struct DtoVehicle
         {
-            public int Id {  get; set; }
+            public int Id { get; set; }
+
+            [Required(ErrorMessage = "El número de placa es obligatorio.")]
+            [MinLength(5), MaxLength(10)]
             public string Plate_Number { get; set; }
+
+
+            [Required(ErrorMessage = "La marca del vehículo es obligatoria.")]
+            [MinLength(2), MaxLength(20)]
             public string Make { get; set; }
+
+            [Required(ErrorMessage = "El modelo del vehículo es obligatorio.")]
+            [MinLength(2), MaxLength(20)]
             public string Model { get; set; }
+
+
+            [MinLength(2), MaxLength(20)]
             public string Category { get; set; }
+
+
             public string Traction { get; set; }
+
+            [Range(1900, 2100)]
+            [DefaultValue(0)]
             public int Year { get; set; }
+
+            [MinLength(2), MaxLength(20)]
             public string Color { get; set; }
+
+
             public int Capacity { get; set; }
+
+            [Range(0, int.MaxValue)]
+            [DefaultValue(0)]
             public int Engine_capacity { get; set; }
+
+            [Range(0, int.MaxValue)]
+            [DefaultValue(0)]
             public int Mileage { get; set; }
+
+            [RegularExpression("^(super|diesel|regular)$", ErrorMessage = "El tipo de combustible debe ser 'super', 'diesel' o 'regular'.")]
             public string Fuel { get; set; }
+
+            [DataType(DataType.Date)]
+            [Display(Name = "Fecha de Cambio de Aceite")]
             public DateTime Oil_Change { get; set; }
+
+            [Required(ErrorMessage = "El estado del vehículo es obligatorio.")]
             public bool Status { get; set; }
             public string ImageUrl { get; set; }
-          
-        }
 
+        }
         public static Vehicle ToVehicle(this DtoVehicle dtoVehicle)
         {
             Vehicle vehicle = new()
@@ -51,7 +87,7 @@ namespace Repository.Extensions
                 Oil_Change = dtoVehicle.Oil_Change,
                 Status = dtoVehicle.Status,
                 ImageUrl = dtoVehicle.ImageUrl
-              
+
             };
 
             return vehicle;
@@ -63,28 +99,47 @@ namespace Repository.Extensions
         public struct DtoCreateUser
         {
             public int Id { get; set; }
-            public string Name { get; set; } 
 
-            public string LastName1 { get; set; } 
+            [Required(ErrorMessage = "El nombre es obligatorio")]
+            [StringLength(50)]
+            public string Name { get; set; }
 
-            public string LastName2 { get; set; } 
+            [Required(ErrorMessage = "El apellido es obligatorio")]
+            [StringLength(50)]
+            public string LastName1 { get; set; }
 
+
+            public string LastName2 { get; set; }
+
+            [Required]
+            [RegularExpression(@"^[0-9]{8}$", ErrorMessage = "El número de teléfono debe tener 8 dígitos")]
             public int PhoneNumber { get; set; }
 
             public int LicenseUNA { get; set; }
-            public string Email { get; set; }
-
-            public string Password { get; set; }
 
             public bool State { get; set; }
 
-            
+            [EmailAddress(ErrorMessage = "Dirección de correo electrónico no válida")]
+            public string Email { get; set; }
+
+            //  [MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
+
+
+
+
         }
         public class DtoUser
         {
+            [EmailAddress(ErrorMessage = "Dirección de correo electrónico no válida")]
             public string Email { get; set; } = string.Empty;
+
+            // [MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
+            [DataType(DataType.Password)]
             public string Password { get; set; } = string.Empty;
         }
+
 
         public static User ToUser(this DtoCreateUser dtoUser)
         {
@@ -98,13 +153,14 @@ namespace Repository.Extensions
                 LicenseUNA = dtoUser.LicenseUNA,
                 Email = dtoUser.Email,
                 State = dtoUser.State
-                
+
 
             };
             return user;
         }
 
         #endregion
+
 
         #region Role
 
