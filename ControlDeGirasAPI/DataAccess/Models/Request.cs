@@ -38,6 +38,8 @@ namespace DataAccess.Models
 
         public string TypeOfVehicle { get; set; } = string.Empty;
 
+        public bool ItsDriver { get; set; }
+
         public bool ItsApprove { get; set; } = false;
 
         public bool ItsEndorse { get; set; } = false;

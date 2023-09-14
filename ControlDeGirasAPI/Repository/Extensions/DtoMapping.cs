@@ -274,7 +274,9 @@ namespace Repository.Extensions
 
             public string Observations { get; set; }
 
-            public string TypeOfVehicle { get; set; } 
+            public string TypeOfVehicle { get; set; }
+
+            public bool ItsDriver { get; set; }
         }
 
         public static Request ToRequestByUser(this DtoRequestByUser dtoRequest)
@@ -296,7 +298,8 @@ namespace Repository.Extensions
                 DestinyLocation = dtoRequest.DestinyLocation,
                 Itinerary = dtoRequest.Itinerary,
                 Observations = dtoRequest.Observations,
-                TypeOfVehicle = dtoRequest.TypeOfVehicle
+                TypeOfVehicle = dtoRequest.TypeOfVehicle,
+                ItsDriver = dtoRequest.ItsDriver,
             };
             return newRequest;
         }
@@ -338,7 +341,8 @@ namespace Repository.Extensions
             public string TypeOfVehicle { get; set; }
             public int VehicleId { get; set; }
 
-            
+            public bool ItsDriver { get; set; }
+
         }
 
         public static Request ToRequest(this  DtoRequest dtoRequest)
@@ -364,6 +368,7 @@ namespace Repository.Extensions
                 FinalMileague = dtoRequest.FinalMileague,
                 VehicleId = dtoRequest.VehicleId,
                 TypeOfVehicle = dtoRequest.TypeOfVehicle,
+                ItsDriver = dtoRequest.ItsDriver
             };
             return newRequest;
         }
