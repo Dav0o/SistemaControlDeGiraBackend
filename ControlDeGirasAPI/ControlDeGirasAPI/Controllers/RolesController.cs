@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
@@ -9,6 +10,7 @@ namespace ControlDeGirasAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin, AdminTecnico")]
     public class RolesController : ControllerBase
     {
         private readonly IRoleRepository _roleRepository;

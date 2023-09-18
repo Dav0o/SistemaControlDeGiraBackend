@@ -19,7 +19,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin,Funcionario,Coordinador")]
         public async Task<ActionResult<Request>> Create(DtoRequestByUser request)
         {
             Request newRequest = await _requestRepository.Create(request);
@@ -28,7 +28,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpPut("endorse")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Coordinador")]
         public async Task<IActionResult> Endorse(DtoEndorseRequest request)
         {
             await _requestRepository.Endorse(request);
@@ -44,12 +44,14 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin,Funcionario,Coordinador")]
         public void Delete(int id)
         {
             _requestRepository.Delete(id);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, Guarda")]
         public async Task<List<Request>> GetAll()
         {
             List<Request> list = await _requestRepository.GetAll();
@@ -58,6 +60,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<Request> GetById(int id)
         {
             var request = await _requestRepository.GetById(id);
@@ -66,6 +69,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,Funcionario,Coordinador")]
         public async Task<IActionResult> Update(DtoRequest request)
         {
             await _requestRepository.Update(request);
