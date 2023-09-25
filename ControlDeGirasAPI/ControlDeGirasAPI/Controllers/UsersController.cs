@@ -10,6 +10,8 @@ namespace ControlDeGirasAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
+
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -22,6 +24,7 @@ namespace ControlDeGirasAPI.Controllers
         
 
         [HttpPost]
+        [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<ActionResult<User>> Create(DtoCreateUser request)
         {
             User newUser = await _userRepository.Create(request);
@@ -30,6 +33,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpPost("login")]
+
         public async Task<Object> Login(DtoUser request)
         {
             var user = await _userRepository.Login(request);
@@ -43,6 +47,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<List<User>> GetAll()
         {
             List<User> users = await _userRepository.GetAll();
@@ -51,6 +56,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<IActionResult> Update(DtoCreateUser request)
         {
             await _userRepository.Update(request);
@@ -58,6 +64,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpPatch("{id}/disable")]
+        [Authorize(Roles = "Admin, AdminTecnico")]
         public IActionResult Disable(int id)
         {
             var user = _userRepository.UpdateStatus(id);

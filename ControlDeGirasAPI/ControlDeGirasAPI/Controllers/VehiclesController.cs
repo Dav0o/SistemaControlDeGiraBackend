@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using Repository.Internal.IGeneric;
@@ -9,6 +10,7 @@ namespace ControlDeGirasAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin, AdminTecnico")]
     public class VehiclesController : ControllerBase
     {
 
@@ -25,6 +27,7 @@ namespace ControlDeGirasAPI.Controllers
 
         // GET: api/<VehiclesController>
         [HttpGet]
+       
         public List<Vehicle> Get()
         {
             return _vehicleRepository.GetAll().ToList();
@@ -33,6 +36,7 @@ namespace ControlDeGirasAPI.Controllers
 
         
         [HttpGet("{id}")]
+     
         public Vehicle GetById(int id)
         {
             return _vehicleRepository.GetByCondition(vehicle => vehicle.Id == id, "maintenances");
@@ -43,6 +47,7 @@ namespace ControlDeGirasAPI.Controllers
 
         // POST api/<VehiclesController>
         [HttpPost]
+      
         public Vehicle Post([FromBody] DtoVehicle vehicle)
         {
             return _vehicleRepository.Add(vehicle.ToVehicle());
@@ -51,6 +56,7 @@ namespace ControlDeGirasAPI.Controllers
 
         // PUT api/<VehiclesController>
         [HttpPut("{id}")]
+    
         public IActionResult Update(DtoVehicle request)
         {
             _vehicleRepository.Update(request.ToVehicle()); 
@@ -59,6 +65,7 @@ namespace ControlDeGirasAPI.Controllers
 
         // DESHABILITAR api/<VehiclesController>
         [HttpPatch("{id}/disable")]
+      
         public IActionResult Disable(int id)
         {
             var vehicle = _vehicleRepository.GetByCondition(vehicle => vehicle.Id == id);

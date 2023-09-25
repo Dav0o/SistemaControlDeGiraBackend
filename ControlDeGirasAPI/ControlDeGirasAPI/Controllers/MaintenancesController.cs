@@ -2,12 +2,14 @@
 using Repository.Internal.IGeneric;
 using DataAccess.Models;
 using static Repository.Extensions.DtoMapping;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControlDeGirasAPI.Controllers
 {
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin, AdminTecnico")]
     public class MaintenancesController : ControllerBase
     {
 
