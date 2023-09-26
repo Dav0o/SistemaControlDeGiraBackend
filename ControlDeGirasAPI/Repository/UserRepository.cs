@@ -171,9 +171,16 @@ namespace Repository
 
         }
 
-        public Task<User> GetById(int id)
+
+        public async Task<User> GetById(int id)
         {
-            return _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return null;
+            }
+            return user;
         }
     }
 }
