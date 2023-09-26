@@ -55,6 +55,15 @@ namespace ControlDeGirasAPI.Controllers
             return users;
         }
 
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Admin, AdminTecnico")]
+        public async Task<User> GetById(int id)
+        {
+            var user = await _userRepository.GetById(id);
+
+            return user;
+        }
+
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<IActionResult> Update(DtoCreateUser request)

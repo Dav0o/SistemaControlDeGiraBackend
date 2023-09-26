@@ -1,4 +1,5 @@
-﻿using DataAccess.Models.Relations;
+﻿using DataAccess.Models;
+using DataAccess.Models.Relations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,9 @@ namespace ControlDeGirasAPI.Controllers
         {
             return _userRoleRepository.GetAll();
         }
+
+    
+
 
         [HttpPost]
         public User_Role Post([FromBody] DtoUserRole request) 

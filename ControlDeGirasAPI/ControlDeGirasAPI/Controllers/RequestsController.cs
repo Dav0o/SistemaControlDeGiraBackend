@@ -35,6 +35,8 @@ namespace ControlDeGirasAPI.Controllers
             return NoContent();
         }
 
+
+
         [HttpPut("approve")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Approve(DtoApproveRequest request)
