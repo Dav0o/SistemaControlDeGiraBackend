@@ -335,11 +335,9 @@ namespace Repository.Extensions
 
             public string Observations { get; set; }
 
-            public int InitialMileague { get; set; }
-
-            public int FinalMileague { get; set; }
+           
             public string TypeOfVehicle { get; set; }
-            public int VehicleId { get; set; }
+            
 
             public bool ItsDriver { get; set; }
 
@@ -364,9 +362,6 @@ namespace Repository.Extensions
                 DestinyLocation = dtoRequest.DestinyLocation,
                 Itinerary = dtoRequest.Itinerary,
                 Observations = dtoRequest.Observations,
-                InitialMileague = dtoRequest.InitialMileague,
-                FinalMileague = dtoRequest.FinalMileague,
-                VehicleId = dtoRequest.VehicleId,
                 TypeOfVehicle = dtoRequest.TypeOfVehicle,
                 ItsDriver = dtoRequest.ItsDriver
             };
@@ -376,7 +371,8 @@ namespace Repository.Extensions
         public struct DtoEndorseRequest
         {
             public int Id {  get; set; }
-            
+
+            [Required(ErrorMessage = "El vehiculo es obligatorio")]
             public int? VehicleId { get; set; }
 
             public bool ItsEndorse { get; set; }
