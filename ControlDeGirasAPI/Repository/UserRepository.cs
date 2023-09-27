@@ -176,9 +176,11 @@ namespace Repository
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
-            if (user == null)
+            if (user != null)
             {
-                return null;
+                await _context.Entry(user)
+                    .Collection(c => c.user_Roles)
+                    .LoadAsync();
             }
             return user;
         }
