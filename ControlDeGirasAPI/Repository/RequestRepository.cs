@@ -53,6 +53,10 @@ namespace Repository
             process.UserId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             _context.Processes.Add(process);
+
+
+
+
             await _context.SaveChangesAsync();
 
         }
@@ -103,7 +107,35 @@ namespace Repository
 
         }
 
-        public void Delete(int id)
+
+        public async Task Cancel(DtoCanceledRequest dtoCanceledRequest)
+        {
+            var requestToCancel = await _context.Requests.FirstOrDefaultAsync(r => r.Id == dtoCanceledRequest.Id);
+
+            if (requestToCancel == null)
+            {
+                return;
+            }
+
+            requestToCancel.ItsCanceled = requestToCancel.ItsCanceled;
+
+            _context.Requests.Attach(requestToCancel);
+            _context.Entry(requestToCancel).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            Process process = new Process();
+
+            process.RequestId = requestToCancel.Id;
+            process.StateId = 4; // Estado de solicitud cancelada
+            process.UserId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            _context.Processes.Add(process);
+            await _context.SaveChangesAsync();
+        }
+    
+        
+
+            public void Delete(int id)
         {
             var request = _context.Requests.FirstOrDefault(x => x.Id == id);
 
@@ -144,6 +176,6 @@ namespace Repository
 
         }
 
-        
+       
     }
 }

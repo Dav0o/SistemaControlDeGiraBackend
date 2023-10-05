@@ -85,5 +85,13 @@ namespace ControlDeGirasAPI.Controllers
 
             return Ok(user);
         }
+
+
+        [HttpGet("usersbyrole/{roleName}")]
+        public async Task<IActionResult> GetUsersByRole(string roleName)
+        {
+            var users = await _userRepository.GetByRole(roleName);
+            return Ok(users);
+        }
     }
 }

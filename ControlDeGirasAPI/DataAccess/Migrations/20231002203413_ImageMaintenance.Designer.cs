@@ -3,6 +3,7 @@ using System;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231002203413_ImageMaintenance")]
+    partial class ImageMaintenance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,6 +132,9 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("ArriveDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("BudgetUnid")
+                        .HasColumnType("int");
+
                     b.Property<string>("Condition")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -150,9 +156,8 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ExecutingUnit")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("ExecutingUnit")
+                        .HasColumnType("int");
 
                     b.Property<int>("FinalMileague")
                         .HasColumnType("int");
@@ -165,9 +170,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<bool>("ItsApprove")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("ItsCanceled")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("ItsDriver")
@@ -187,9 +189,8 @@ namespace DataAccess.Migrations
                     b.Property<int>("PersonsAmount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
 
                     b.Property<string>("TypeOfVehicle")
                         .IsRequired()
@@ -254,9 +255,6 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("DNI")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()

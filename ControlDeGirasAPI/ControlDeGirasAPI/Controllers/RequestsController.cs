@@ -45,6 +45,16 @@ namespace ControlDeGirasAPI.Controllers
             return NoContent();
         }
 
+        [HttpPut("cancel")] //new
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Cancel(DtoCanceledRequest request)
+
+        { 
+            await _requestRepository.Cancel(request);
+            return NoContent();
+        }
+  
+
         [HttpDelete]
         [Authorize(Roles = "Admin,Funcionario,Coordinador")]
         public void Delete(int id)

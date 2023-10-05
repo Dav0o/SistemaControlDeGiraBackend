@@ -100,6 +100,8 @@ namespace Repository.Extensions
         {
             public int Id { get; set; }
 
+            public int DNI { get; set; }
+
             [Required(ErrorMessage = "El nombre es obligatorio")]
             [StringLength(50)]
             public string Name { get; set; }
@@ -146,6 +148,7 @@ namespace Repository.Extensions
             User user = new()
             {
                 Id = dtoUser.Id,
+                DNI= dtoUser.DNI,
                 Name = dtoUser.Name,
                 LastName1 = dtoUser.LastName1,
                 LastName2 = dtoUser.LastName2,
@@ -196,6 +199,7 @@ namespace Repository.Extensions
             public string Status { get; set; }
             public string Description { get; set; }
             public int VehicleId { get; set; }
+            public string ImageUrl { get; set; }
         }
 
         public static Maintenance ToMaintenance(this DtoMaintenance dtoMaintenance)
@@ -211,7 +215,8 @@ namespace Repository.Extensions
                 Category = dtoMaintenance.Category,
                 Status = dtoMaintenance.Status,
                 Description = dtoMaintenance.Description,
-                VehicleId = dtoMaintenance.VehicleId
+                VehicleId = dtoMaintenance.VehicleId,
+                ImageUrl = dtoMaintenance.ImageUrl
 
 
             };
@@ -248,16 +253,15 @@ namespace Repository.Extensions
             public int Id { get; set; }
             public int ConsecutiveNumber { get; set; }
 
-            public int ExecutingUnit { get; set; }
+            public string ExecutingUnit { get; set; }
 
             public string TypeRequest { get; set; }
 
             public string Condition { get; set; }
 
-            public int Priority { get; set; }
+            public string Priority { get; set; }
 
-            public int BudgetUnid { get; set; }
-
+     
             public int PersonsAmount { get; set; }
 
             public string Objective { get; set; }
@@ -289,7 +293,7 @@ namespace Repository.Extensions
                 TypeRequest = dtoRequest.TypeRequest,
                 Condition = dtoRequest.Condition,
                 Priority = dtoRequest.Priority,
-                BudgetUnid = dtoRequest.BudgetUnid,
+               
                 PersonsAmount = dtoRequest.PersonsAmount,
                 Objective = dtoRequest.Objective,
                 DepartureDate = dtoRequest.DepartureDate,
@@ -309,15 +313,13 @@ namespace Repository.Extensions
             public int Id { get; set; }
             public int ConsecutiveNumber { get; set; }
 
-            public int ExecutingUnit { get; set; }
+            public string ExecutingUnit { get; set; }
 
             public string TypeRequest { get; set; }
 
             public string Condition { get; set; }
 
-            public int Priority { get; set; }
-
-            public int BudgetUnid { get; set; }
+            public string Priority { get; set; }
 
             public int PersonsAmount { get; set; }
 
@@ -355,7 +357,7 @@ namespace Repository.Extensions
                 TypeRequest = dtoRequest.TypeRequest,
                 Condition = dtoRequest.Condition,
                 Priority = dtoRequest.Priority,
-                BudgetUnid = dtoRequest.BudgetUnid,
+              
                 PersonsAmount = dtoRequest.PersonsAmount,
                 Objective = dtoRequest.Objective,
                 DepartureDate = dtoRequest.DepartureDate,
@@ -390,6 +392,15 @@ namespace Repository.Extensions
 
 
         }
+
+
+        public struct DtoCanceledRequest
+        {
+            public int Id { get; set; }
+
+            public bool ItsCanceled{ get; set; }
+        }
+
         #endregion
 
     }

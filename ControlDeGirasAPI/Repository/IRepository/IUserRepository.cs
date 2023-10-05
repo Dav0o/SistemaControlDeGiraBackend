@@ -28,5 +28,7 @@ namespace Repository.IRepository
 
         public Task<User> GetById(int id);
 
+        public Task<List<User>> GetByRole(String roleName);
+
     }
 }

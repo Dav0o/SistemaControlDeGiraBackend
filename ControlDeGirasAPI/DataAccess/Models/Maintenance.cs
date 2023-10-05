@@ -17,6 +17,8 @@ namespace DataAccess.Models
         public string Status { get; set; } = default!;
         public string Description { get; set; } = default!;
 
+        public string ImageUrl { get; set; }
+
         public int VehicleId { get; set; } //FK
         public Vehicle Vehicle { get; set; } = null!; 
     }
