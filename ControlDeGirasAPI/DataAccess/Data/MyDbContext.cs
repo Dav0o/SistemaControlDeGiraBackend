@@ -31,6 +31,12 @@ namespace DataAccess.Data
 
         public DbSet<State> States { get; set; }
 
+        public DbSet<DriverLog> DriverLogs { get; set; }
+
+        public DbSet<RequestDays> RequestDays { get; set; }
+
+        public DbSet<RequestGasoline> RequestGasolines { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Vehicle -> Maintenance
@@ -81,6 +87,25 @@ namespace DataAccess.Data
                 .WithOne(s => s.State)
                 .HasForeignKey(s => s.StateId);
 
+            //User -> DriverLog
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.DriverLog)
+                .WithOne(x => x.User)
+                .HasForeignKey<DriverLog>(fk => fk.UserId);
+
+            //Request -> Days
+
+            modelBuilder.Entity<Request>()
+                .HasMany(x => x.RequestDays)
+                .WithOne(x => x.Request)
+                .HasForeignKey(k => k.RequestId);
+
+            //Request -> Gasoline
+
+            modelBuilder.Entity<Request>()
+                .HasMany(x => x.RequestGasoline)
+                .WithOne(x => x.Request)
+                .HasForeignKey(k => k.RequestId);
         }
     }
 }

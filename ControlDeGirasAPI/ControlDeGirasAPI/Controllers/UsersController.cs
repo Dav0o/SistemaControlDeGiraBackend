@@ -24,7 +24,7 @@ namespace ControlDeGirasAPI.Controllers
         
 
         [HttpPost]
-        [Authorize(Roles = "Admin, AdminTecnico")]
+       // [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<ActionResult<User>> Create(DtoCreateUser request)
         {
             User newUser = await _userRepository.Create(request);

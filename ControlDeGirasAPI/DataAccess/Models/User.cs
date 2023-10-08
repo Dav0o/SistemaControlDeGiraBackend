@@ -35,5 +35,7 @@ namespace DataAccess.Models
         public List<User_Role> user_Roles { get; set; }
 
         public List<Process> Processes { get; set; }
+
+        public DriverLog? DriverLog { get; set; }
     }
 }

@@ -56,6 +56,8 @@ namespace DataAccess.Models
 
         public List<Process>? Processes { get; set; }
 
+        public List<RequestDays>? RequestDays { get; set; }
 
+        public List<RequestGasoline>? RequestGasoline { get; set; }
     }
 }
