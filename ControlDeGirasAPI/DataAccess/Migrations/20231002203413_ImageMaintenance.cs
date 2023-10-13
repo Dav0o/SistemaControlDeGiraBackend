@@ -39,7 +39,7 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ImageUrl",
+                name: "Image",
                 table: "Maintenances");
 
             migrationBuilder.AlterColumn<int>(
