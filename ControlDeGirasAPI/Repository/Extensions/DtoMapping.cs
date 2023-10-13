@@ -337,11 +337,9 @@ namespace Repository.Extensions
 
             public string Observations { get; set; }
 
-            public int InitialMileague { get; set; }
-
-            public int FinalMileague { get; set; }
+           
             public string TypeOfVehicle { get; set; }
-            public int VehicleId { get; set; }
+            
 
             public bool ItsDriver { get; set; }
 
@@ -366,9 +364,6 @@ namespace Repository.Extensions
                 DestinyLocation = dtoRequest.DestinyLocation,
                 Itinerary = dtoRequest.Itinerary,
                 Observations = dtoRequest.Observations,
-                InitialMileague = dtoRequest.InitialMileague,
-                FinalMileague = dtoRequest.FinalMileague,
-                VehicleId = dtoRequest.VehicleId,
                 TypeOfVehicle = dtoRequest.TypeOfVehicle,
                 ItsDriver = dtoRequest.ItsDriver
             };
@@ -378,7 +373,8 @@ namespace Repository.Extensions
         public struct DtoEndorseRequest
         {
             public int Id {  get; set; }
-            
+
+            [Required(ErrorMessage = "El vehiculo es obligatorio")]
             public int? VehicleId { get; set; }
 
             public bool ItsEndorse { get; set; }
@@ -401,6 +397,103 @@ namespace Repository.Extensions
             public bool ItsCanceled{ get; set; }
         }
 
+        #endregion
+
+        #region DriverLog
+        public struct DtoDriverLog
+        {
+            public int Id { get; set; }
+            public DateTime InitialLogDate { get; set; }
+
+            public float OrdinaryHours { get; set; }
+
+            public float BonusHours { get; set; }
+
+            public float ExtraHours { get; set; }
+
+            public float Salary { get; set; }
+
+            public int UserId { get; set; }
+        }
+
+        public static DriverLog ToDriverLog(this DtoDriverLog dtoDriverLog)
+        {
+            DriverLog newLog = new()
+            {
+             Id = dtoDriverLog.Id,
+             InitialLogDate = dtoDriverLog.InitialLogDate,
+             OrdinaryHours = dtoDriverLog.OrdinaryHours,
+             BonusHours = dtoDriverLog.BonusHours,
+             ExtraHours = dtoDriverLog.ExtraHours,
+             Salary = dtoDriverLog.Salary,
+             UserId = dtoDriverLog.UserId
+            };
+            return newLog;
+        }
+        #endregion
+
+        #region RequestDays
+        public struct DtoRequestDays
+        {
+            public int Id { get; set; }
+            public DateOnly Day { get; set; }
+            public TimeOnly StartTime { get; set; }
+            public TimeOnly EndTime { get; set; }
+
+            public int RequestId { get; set; }
+        }
+        public static RequestDays ToRequestDays(this  DtoRequestDays dtoRequestDays)
+        {
+            RequestDays newDays = new()
+            {
+                Id = dtoRequestDays.Id,
+                Day = dtoRequestDays.Day,
+                StartTime = dtoRequestDays.StartTime,
+                EndTime = dtoRequestDays.EndTime,
+                RequestId = dtoRequestDays.RequestId
+            };
+            return newDays;
+        }
+        #endregion
+
+        #region RequestGasoline
+        public struct DtoRequestGasoline
+        {
+            public int Id { get; set; }
+            public string City { get; set; } 
+            public string Commerce { get; set; } 
+
+            public int Mileague { get; set; }
+
+            public int Litres { get; set; }
+
+            public DateOnly Date { get; set; }
+
+            public string Card { get; set; }
+
+            public string Invoice { get; set; }
+
+            public string Authorization { get; set; }
+
+            public int RequestId { get; set; }
+        }
+        public static RequestGasoline ToRequestGasoline(this  DtoRequestGasoline dtoRequestGasoline) 
+        {
+            RequestGasoline newGasoline = new()
+            {
+                Id =dtoRequestGasoline.Id,
+                City = dtoRequestGasoline.City,
+                Commerce = dtoRequestGasoline.Commerce,
+                Mileague = dtoRequestGasoline.Mileague,
+                Litres = dtoRequestGasoline.Litres,
+                Date = dtoRequestGasoline.Date,
+                Card = dtoRequestGasoline.Card,
+                Invoice = dtoRequestGasoline.Invoice,
+                Authorization = dtoRequestGasoline.Authorization,
+                RequestId = dtoRequestGasoline.RequestId
+            };
+            return newGasoline;
+        }
         #endregion
 
     }

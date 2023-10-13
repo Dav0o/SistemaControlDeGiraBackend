@@ -56,6 +56,18 @@ namespace ControlDeGirasAPI.Controllers
             return NoContent();
         }
 
+
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            _maintenanceRepository.Delete(id);
+        }
+
+
+
+
+
+
     }
 
 }

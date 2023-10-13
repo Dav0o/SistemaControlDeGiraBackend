@@ -24,6 +24,9 @@ namespace Repository
             services.AddScoped<IGenericRepository<User_Role>, GenericRepository<User_Role>>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
+            services.AddScoped<IGenericRepository<DriverLog>, GenericRepository<DriverLog>>();
+            services.AddScoped<IGenericRepository<RequestDays>, GenericRepository<RequestDays>>();
+            services.AddScoped<IGenericRepository<RequestGasoline>, GenericRepository<RequestGasoline>>();
 
             return services;
         }
