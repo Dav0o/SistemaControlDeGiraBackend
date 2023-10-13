@@ -17,6 +17,8 @@ namespace Repository.IRepository
 
         public Task Approve(DtoApproveRequest dtoApproveRequest);
 
+        public Task Cancel(DtoCanceledRequest dtoCanceledRequest); //new
+
         public Task Update(DtoRequest dtoRequest);
 
         public void Delete(int id);

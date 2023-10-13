@@ -184,5 +184,13 @@ namespace Repository
             }
             return user;
         }
+
+
+        public async Task<List<User>> GetByRole(string roleName)
+        {
+            return await _context.Users
+                .Where(u => u.user_Roles.Any(ur => ur.Role.Name == roleName))
+                .ToListAsync();
+        }
     }
 }

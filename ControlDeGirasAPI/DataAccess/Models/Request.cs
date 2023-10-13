@@ -10,15 +10,13 @@ namespace DataAccess.Models
     {
         public int ConsecutiveNumber { get; set; }
 
-        public int ExecutingUnit { get; set; }
+        public string ExecutingUnit { get; set; } = "CH";
 
-        public string TypeRequest { get; set; } = string.Empty;
+        public string TypeRequest { get; set; }
 
-        public string Condition { get; set; } = string.Empty;
+        public string Condition { get; set; } = "Permanente";
 
-        public int Priority { get; set; }
-
-        public int BudgetUnid { get; set; } 
+        public string Priority { get; set; }
 
         public int PersonsAmount { get; set; }
 
@@ -43,6 +41,8 @@ namespace DataAccess.Models
         public bool ItsApprove { get; set; } = false;
 
         public bool ItsEndorse { get; set; } = false;
+
+        public bool ItsCanceled { get; set; } = false;
 
         //Relations
 

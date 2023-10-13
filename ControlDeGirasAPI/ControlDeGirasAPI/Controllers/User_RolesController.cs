@@ -29,16 +29,28 @@ namespace ControlDeGirasAPI.Controllers
 
 
         [HttpPost]
-        public User_Role Post([FromBody] DtoUserRole request) 
+        public IActionResult Post([FromBody] DtoUserRole request) 
         {
-            return _userRoleRepository.Add(request.ToUserRole());
+            try
+            {
+                var newUserRole = request.ToUserRole();
+                _userRoleRepository.Add(newUserRole);
+                return Ok(newUserRole);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al agregar la relación: {ex.Message}");
+            }
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{userId}/{roleId}")]
+        public IActionResult Delete(int userId, int roleId)
         {
-            _userRoleRepository.Delete(id);
-        }
+            
+            
+                _userRoleRepository.Delete(userId, roleId);
+                return Ok(); 
+            }
 
 
     }

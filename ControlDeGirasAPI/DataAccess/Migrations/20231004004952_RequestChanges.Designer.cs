@@ -3,6 +3,7 @@ using System;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,49 +11,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231004004952_RequestChanges")]
+    partial class RequestChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("DataAccess.Models.DriverLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<float>("BonusHours")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<float>("ExtraHours")
-                        .HasColumnType("float");
-
-                    b.Property<DateOnly>("InitialLogDate")
-                        .HasColumnType("date");
-
-                    b.Property<float>("OrdinaryHours")
-                        .HasColumnType("float");
-
-                    b.Property<float>("Salary")
-                        .HasColumnType("float");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("DriverLogs");
-                });
 
             modelBuilder.Entity("DataAccess.Models.Maintenance", b =>
                 {
@@ -244,82 +212,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Requests");
                 });
 
-            modelBuilder.Entity("DataAccess.Models.RequestDays", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateOnly>("Day")
-                        .HasColumnType("date");
-
-                    b.Property<TimeOnly>("EndTime")
-                        .HasColumnType("time");
-
-                    b.Property<int>("RequestId")
-                        .HasColumnType("int");
-
-                    b.Property<TimeOnly>("StartTime")
-                        .HasColumnType("time");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RequestId");
-
-                    b.ToTable("RequestDays");
-                });
-
-            modelBuilder.Entity("DataAccess.Models.RequestGasoline", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Authorization")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Card")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Commerce")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Invoice")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Litres")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Mileague")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RequestId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RequestId");
-
-                    b.ToTable("RequestGasolines");
-                });
-
             modelBuilder.Entity("DataAccess.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -365,9 +257,6 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("DNI")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -481,17 +370,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Vehicles");
                 });
 
-            modelBuilder.Entity("DataAccess.Models.DriverLog", b =>
-                {
-                    b.HasOne("DataAccess.Models.User", "User")
-                        .WithOne("DriverLog")
-                        .HasForeignKey("DataAccess.Models.DriverLog", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DataAccess.Models.Maintenance", b =>
                 {
                     b.HasOne("DataAccess.Models.Vehicle", "Vehicle")
@@ -558,35 +436,9 @@ namespace DataAccess.Migrations
                     b.Navigation("Vehicle");
                 });
 
-            modelBuilder.Entity("DataAccess.Models.RequestDays", b =>
-                {
-                    b.HasOne("DataAccess.Models.Request", "Request")
-                        .WithMany("RequestDays")
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Request");
-                });
-
-            modelBuilder.Entity("DataAccess.Models.RequestGasoline", b =>
-                {
-                    b.HasOne("DataAccess.Models.Request", "Request")
-                        .WithMany("RequestGasoline")
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Request");
-                });
-
             modelBuilder.Entity("DataAccess.Models.Request", b =>
                 {
                     b.Navigation("Processes");
-
-                    b.Navigation("RequestDays");
-
-                    b.Navigation("RequestGasoline");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Role", b =>
@@ -601,8 +453,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Models.User", b =>
                 {
-                    b.Navigation("DriverLog");
-
                     b.Navigation("Processes");
 
                     b.Navigation("user_Roles");
