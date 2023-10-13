@@ -199,7 +199,7 @@ namespace Repository.Extensions
             public string Status { get; set; }
             public string Description { get; set; }
             public int VehicleId { get; set; }
-            public string ImageUrl { get; set; }
+            public string Image { get; set; }
         }
 
         public static Maintenance ToMaintenance(this DtoMaintenance dtoMaintenance)
@@ -216,7 +216,7 @@ namespace Repository.Extensions
                 Status = dtoMaintenance.Status,
                 Description = dtoMaintenance.Description,
                 VehicleId = dtoMaintenance.VehicleId,
-                ImageUrl = dtoMaintenance.ImageUrl
+                Image = dtoMaintenance.Image
 
 
             };
