@@ -29,7 +29,7 @@ namespace DataAccess.Migrations
                 .Annotation("Relational:ColumnOrder", 0);
 
             migrationBuilder.AddColumn<string>(
-                name: "ImageUrl",
+                name: "Image",
                 table: "Maintenances",
                 type: "longtext",
                 nullable: false);
