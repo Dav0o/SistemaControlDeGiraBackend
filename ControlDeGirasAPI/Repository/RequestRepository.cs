@@ -117,10 +117,10 @@ namespace Repository
                 return;
             }
 
-            requestToCancel.ItsCanceled = requestToCancel.ItsCanceled;
+            requestToCancel.ItsCanceled = true;
 
-            _context.Requests.Attach(requestToCancel);
-            _context.Entry(requestToCancel).State = EntityState.Modified;
+            _context.Requests.Update(requestToCancel);
+
             await _context.SaveChangesAsync();
 
             Process process = new Process();
@@ -132,10 +132,9 @@ namespace Repository
             _context.Processes.Add(process);
             await _context.SaveChangesAsync();
         }
-    
-        
 
-            public void Delete(int id)
+
+        public void Delete(int id)
         {
             var request = _context.Requests.FirstOrDefault(x => x.Id == id);
 
