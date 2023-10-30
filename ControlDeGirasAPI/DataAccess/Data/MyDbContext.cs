@@ -89,9 +89,9 @@ namespace DataAccess.Data
 
             //User -> DriverLog
             modelBuilder.Entity<User>()
-                .HasOne(x => x.DriverLog)
+                .HasMany(x => x.DriverLogs)
                 .WithOne(x => x.User)
-                .HasForeignKey<DriverLog>(fk => fk.UserId);
+                .HasForeignKey(fk => fk.UserId);
 
             //Request -> Days
 

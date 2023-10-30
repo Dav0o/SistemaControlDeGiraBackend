@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20231002203413_ImageMaintenance")]
-    partial class ImageMaintenance
+    [Migration("20231030021121_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,40 @@ namespace DataAccess.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("DataAccess.Models.DriverLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<float>("BonusHours")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<float>("ExtraHours")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("InitialLogDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<float>("OrdinaryHours")
+                        .HasColumnType("float");
+
+                    b.Property<float>("Salary")
+                        .HasColumnType("float");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DriverLogs");
+                });
 
             modelBuilder.Entity("DataAccess.Models.Maintenance", b =>
                 {
@@ -41,7 +75,7 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -132,9 +166,6 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("ArriveDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("BudgetUnid")
-                        .HasColumnType("int");
-
                     b.Property<string>("Condition")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -156,8 +187,9 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("ExecutingUnit")
-                        .HasColumnType("int");
+                    b.Property<string>("ExecutingUnit")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("FinalMileague")
                         .HasColumnType("int");
@@ -170,6 +202,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<bool>("ItsApprove")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("ItsCanceled")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("ItsDriver")
@@ -189,8 +224,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("PersonsAmount")
                         .HasColumnType("int");
 
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TypeOfVehicle")
                         .IsRequired()
@@ -208,6 +244,77 @@ namespace DataAccess.Migrations
                     b.HasIndex("VehicleId");
 
                     b.ToTable("Requests");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.RequestDays", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateOnly>("Day")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("RequestId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestId");
+
+                    b.ToTable("RequestDays");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.RequestGasoline", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Authorization")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Card")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("City")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Commerce")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Invoice")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Litres")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Mileague")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestId");
+
+                    b.ToTable("RequestGasolines");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Role", b =>
@@ -255,6 +362,9 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("DNI")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -368,6 +478,17 @@ namespace DataAccess.Migrations
                     b.ToTable("Vehicles");
                 });
 
+            modelBuilder.Entity("DataAccess.Models.DriverLog", b =>
+                {
+                    b.HasOne("DataAccess.Models.User", "User")
+                        .WithMany("DriverLogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DataAccess.Models.Maintenance", b =>
                 {
                     b.HasOne("DataAccess.Models.Vehicle", "Vehicle")
@@ -434,9 +555,35 @@ namespace DataAccess.Migrations
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("DataAccess.Models.RequestDays", b =>
+                {
+                    b.HasOne("DataAccess.Models.Request", "Request")
+                        .WithMany("RequestDays")
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.RequestGasoline", b =>
+                {
+                    b.HasOne("DataAccess.Models.Request", "Request")
+                        .WithMany("RequestGasoline")
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Request");
+                });
+
             modelBuilder.Entity("DataAccess.Models.Request", b =>
                 {
                     b.Navigation("Processes");
+
+                    b.Navigation("RequestDays");
+
+                    b.Navigation("RequestGasoline");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Role", b =>
@@ -451,6 +598,8 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Models.User", b =>
                 {
+                    b.Navigation("DriverLogs");
+
                     b.Navigation("Processes");
 
                     b.Navigation("user_Roles");

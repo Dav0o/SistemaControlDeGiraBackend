@@ -48,8 +48,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("DriverLogs");
                 });
@@ -279,19 +278,15 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Authorization")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Card")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Commerce")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreateDate")
@@ -301,7 +296,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("Invoice")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("Litres")
@@ -484,8 +478,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Models.DriverLog", b =>
                 {
                     b.HasOne("DataAccess.Models.User", "User")
-                        .WithOne("DriverLog")
-                        .HasForeignKey("DataAccess.Models.DriverLog", "UserId")
+                        .WithMany("DriverLogs")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -601,7 +595,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Models.User", b =>
                 {
-                    b.Navigation("DriverLog");
+                    b.Navigation("DriverLogs");
 
                     b.Navigation("Processes");
 

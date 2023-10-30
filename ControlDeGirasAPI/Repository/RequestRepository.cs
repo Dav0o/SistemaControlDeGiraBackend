@@ -54,9 +54,6 @@ namespace Repository
 
             _context.Processes.Add(process);
 
-
-
-
             await _context.SaveChangesAsync();
 
         }
@@ -103,6 +100,44 @@ namespace Repository
             _context.Processes.Add(process);
             await _context.SaveChangesAsync();
 
+            //Create Days and Gasoline for the request
+
+            TimeSpan duration = (request.ArriveDate - request.DepartureDate);
+            DateOnly currentDate = DateOnly.FromDateTime(request.DepartureDate);
+
+            //Days schedule for driver
+            for (int i = 0; i <= duration.TotalDays; i++)
+            {
+                RequestDays newSchedule = new RequestDays();
+                newSchedule.Day = currentDate;
+                newSchedule.StartTime = new TimeOnly(8,0,0);
+                newSchedule.EndTime = new TimeOnly(17, 0, 0);
+                newSchedule.RequestId = request.Id;
+
+                _context.RequestDays.Add(newSchedule);
+                await _context.SaveChangesAsync();
+
+                currentDate = currentDate.AddDays(1);
+
+            }
+            //Gasoline supply registration
+            for (int i = 0; i <= duration.TotalDays; i++)
+            {
+                RequestGasoline newSupply = new RequestGasoline();
+                newSupply.City = "";
+                newSupply.Commerce = "";
+                newSupply.Mileague = 0;
+                newSupply.Litres = 0;
+                newSupply.Date = new DateOnly(2000, 01, 01);
+                newSupply.Card = "";
+                newSupply.Invoice = "";
+                newSupply.Authorization = "";
+                newSupply.RequestId = request.Id;
+
+                _context.RequestGasolines.Add(newSupply);
+                await _context.SaveChangesAsync();
+            }
+            
             return request;
 
         }
@@ -149,7 +184,7 @@ namespace Repository
         public async Task<List<Request>> GetAll()
         {
             List<Request> requests = await _context.Requests.ToListAsync();
-
+            
             return requests;
         }
 
@@ -176,5 +211,7 @@ namespace Repository
         }
 
        
+
+
     }
 }

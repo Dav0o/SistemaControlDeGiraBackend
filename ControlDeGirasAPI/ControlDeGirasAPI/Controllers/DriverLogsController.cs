@@ -26,7 +26,7 @@ namespace ControlDeGirasAPI.Controllers
 
         public List<DriverLog> Get()
         {
-            return _logRepo.GetAll();
+            return _logRepo.GetAllByCondition(x => x.Id != null,"User");
 
         }
 

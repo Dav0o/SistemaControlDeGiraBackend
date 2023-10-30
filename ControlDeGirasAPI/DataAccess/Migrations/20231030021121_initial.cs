@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,6 +51,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    DNI = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: false),
                     LastName1 = table.Column<string>(type: "longtext", nullable: false),
                     LastName2 = table.Column<string>(type: "longtext", nullable: false),
@@ -105,7 +106,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    InitialLogDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    InitialLogDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     OrdinaryHours = table.Column<float>(type: "float", nullable: false),
                     BonusHours = table.Column<float>(type: "float", nullable: false),
                     ExtraHours = table.Column<float>(type: "float", nullable: false),
@@ -165,6 +166,7 @@ namespace DataAccess.Migrations
                     Category = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: false),
                     Description = table.Column<string>(type: "longtext", nullable: false),
+                    Image = table.Column<string>(type: "longtext", nullable: false),
                     VehicleId = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -187,11 +189,10 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     ConsecutiveNumber = table.Column<int>(type: "int", nullable: false),
-                    ExecutingUnit = table.Column<int>(type: "int", nullable: false),
+                    ExecutingUnit = table.Column<string>(type: "longtext", nullable: false),
                     TypeRequest = table.Column<string>(type: "longtext", nullable: false),
                     Condition = table.Column<string>(type: "longtext", nullable: false),
-                    Priority = table.Column<int>(type: "int", nullable: false),
-                    BudgetUnid = table.Column<int>(type: "int", nullable: false),
+                    Priority = table.Column<string>(type: "longtext", nullable: false),
                     PersonsAmount = table.Column<int>(type: "int", nullable: false),
                     Objective = table.Column<string>(type: "longtext", nullable: false),
                     DepartureDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -204,6 +205,7 @@ namespace DataAccess.Migrations
                     ItsDriver = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     ItsApprove = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     ItsEndorse = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ItsCanceled = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     InitialMileague = table.Column<int>(type: "int", nullable: false),
                     FinalMileague = table.Column<int>(type: "int", nullable: false),
                     VehicleId = table.Column<int>(type: "int", nullable: true),
@@ -285,14 +287,14 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    City = table.Column<string>(type: "longtext", nullable: false),
-                    Commerce = table.Column<string>(type: "longtext", nullable: false),
+                    City = table.Column<string>(type: "longtext", nullable: true),
+                    Commerce = table.Column<string>(type: "longtext", nullable: true),
                     Mileague = table.Column<int>(type: "int", nullable: false),
                     Litres = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    Card = table.Column<string>(type: "longtext", nullable: false),
-                    Invoice = table.Column<string>(type: "longtext", nullable: false),
-                    Authorization = table.Column<string>(type: "longtext", nullable: false),
+                    Card = table.Column<string>(type: "longtext", nullable: true),
+                    Invoice = table.Column<string>(type: "longtext", nullable: true),
+                    Authorization = table.Column<string>(type: "longtext", nullable: true),
                     RequestId = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -311,8 +313,7 @@ namespace DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_DriverLogs_UserId",
                 table: "DriverLogs",
-                column: "UserId",
-                unique: true);
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Maintenances_VehicleId",
