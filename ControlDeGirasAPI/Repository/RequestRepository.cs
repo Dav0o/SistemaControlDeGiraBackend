@@ -3,11 +3,13 @@ using DataAccess.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.Cms;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Repository.Extensions;
 using Repository.IRepository;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
@@ -103,15 +105,21 @@ namespace Repository
             //Create Days and Gasoline for the request
 
             TimeSpan duration = (request.ArriveDate - request.DepartureDate);
-            DateOnly currentDate = DateOnly.FromDateTime(request.DepartureDate);
+            DateTime currentDate = request.DepartureDate;
+
+            string timeInit = "08:00:00";
+            string timeFin = "17:00:00";
+
+            DateTime dateTime1 = DateTime.ParseExact(timeInit, "HH:mm:ss", CultureInfo.InvariantCulture);
+            DateTime dateTime2 = DateTime.ParseExact(timeFin, "HH:mm:ss", CultureInfo.InvariantCulture);
 
             //Days schedule for driver
             for (int i = 0; i <= duration.TotalDays; i++)
             {
                 RequestDays newSchedule = new RequestDays();
                 newSchedule.Day = currentDate;
-                newSchedule.StartTime = new TimeOnly(8,0,0);
-                newSchedule.EndTime = new TimeOnly(17, 0, 0);
+                newSchedule.StartTime = dateTime1.ToShortTimeString(); 
+                newSchedule.EndTime = dateTime2.ToShortTimeString();
                 newSchedule.RequestId = request.Id;
 
                 _context.RequestDays.Add(newSchedule);
@@ -128,7 +136,7 @@ namespace Repository
                 newSupply.Commerce = "";
                 newSupply.Mileague = 0;
                 newSupply.Litres = 0;
-                newSupply.Date = new DateOnly(2000, 01, 01);
+                newSupply.Date = new DateTime(2000, 01, 01);
                 newSupply.Card = "";
                 newSupply.Invoice = "";
                 newSupply.Authorization = "";
@@ -190,7 +198,7 @@ namespace Repository
 
         public async Task<Request> GetById(int id)
         {
-            var request = await _context.Requests.FirstOrDefaultAsync(r => r.Id == id);
+            var request = await _context.Requests.Include(e => e.RequestGasoline).Include(x => x.RequestDays).FirstOrDefaultAsync(r => r.Id == id);
 
             if(request == null)
             {

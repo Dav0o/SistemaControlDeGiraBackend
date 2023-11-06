@@ -9,9 +9,9 @@ namespace DataAccess.Models
 {
     public class RequestDays : BaseEntity
     {
-        public DateOnly Day { get; set; }
-        public TimeOnly StartTime { get; set; }
-        public TimeOnly EndTime { get; set;}
+        public DateTime Day { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set;}
 
         public int RequestId { get; set; }
 

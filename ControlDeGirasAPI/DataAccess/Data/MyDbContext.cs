@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,8 +15,10 @@ namespace DataAccess.Data
         public MyDbContext(DbContextOptions<MyDbContext> options)
             : base(options)
         {
-
+            
         }
+      
+        
         public DbSet<Vehicle> Vehicles { get; set; }
 
         public DbSet<User> Users { get; set; }
@@ -39,6 +42,8 @@ namespace DataAccess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            new DbInitializer(modelBuilder).Seed();
             //Vehicle -> Maintenance
 
             modelBuilder.Entity<Vehicle>()

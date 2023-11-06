@@ -64,7 +64,7 @@ namespace Repository.Extensions
 
             [Required(ErrorMessage = "El estado del vehículo es obligatorio.")]
             public bool Status { get; set; }
-            public string ImageUrl { get; set; }
+            public string Image { get; set; }
 
         }
         public static Vehicle ToVehicle(this DtoVehicle dtoVehicle)
@@ -86,7 +86,7 @@ namespace Repository.Extensions
                 Fuel = dtoVehicle.Fuel,
                 Oil_Change = dtoVehicle.Oil_Change,
                 Status = dtoVehicle.Status,
-                ImageUrl = dtoVehicle.ImageUrl
+                Image = dtoVehicle.Image
 
             };
 
@@ -436,9 +436,9 @@ namespace Repository.Extensions
         public struct DtoRequestDays
         {
             public int Id { get; set; }
-            public DateOnly Day { get; set; }
-            public TimeOnly StartTime { get; set; }
-            public TimeOnly EndTime { get; set; }
+            public DateTime Day { get; set; }
+            public string StartTime { get; set; }
+            public string EndTime { get; set; }
 
             public int RequestId { get; set; }
         }
@@ -467,7 +467,7 @@ namespace Repository.Extensions
 
             public int Litres { get; set; }
 
-            public DateOnly Date { get; set; }
+            public DateTime Date { get; set; }
 
             public string Card { get; set; }
 

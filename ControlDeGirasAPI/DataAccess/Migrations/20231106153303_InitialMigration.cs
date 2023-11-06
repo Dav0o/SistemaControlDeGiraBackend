@@ -4,10 +4,12 @@ using MySql.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -91,7 +93,7 @@ namespace DataAccess.Migrations
                     Fuel = table.Column<string>(type: "longtext", nullable: false),
                     Oil_Change = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "longtext", nullable: false),
+                    Image = table.Column<string>(type: "longtext", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -263,9 +265,9 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Day = table.Column<DateOnly>(type: "date", nullable: false),
-                    StartTime = table.Column<TimeOnly>(type: "time", nullable: false),
-                    EndTime = table.Column<TimeOnly>(type: "time", nullable: false),
+                    Day = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    StartTime = table.Column<string>(type: "longtext", nullable: false),
+                    EndTime = table.Column<string>(type: "longtext", nullable: false),
                     RequestId = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -291,7 +293,7 @@ namespace DataAccess.Migrations
                     Commerce = table.Column<string>(type: "longtext", nullable: true),
                     Mileague = table.Column<int>(type: "int", nullable: false),
                     Litres = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Card = table.Column<string>(type: "longtext", nullable: true),
                     Invoice = table.Column<string>(type: "longtext", nullable: true),
                     Authorization = table.Column<string>(type: "longtext", nullable: true),
@@ -309,6 +311,17 @@ namespace DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "States",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Pendiente" },
+                    { 2, "Avalado" },
+                    { 3, "Aprobado" },
+                    { 4, "Cancelado" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DriverLogs_UserId",

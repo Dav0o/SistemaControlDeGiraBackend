@@ -21,7 +21,7 @@ namespace DataAccess.Models
         public string Fuel { get; set; } = default!;
         public DateTime Oil_Change { get; set; }
         public bool Status { get; set; }
-        public string ImageUrl { get; set; }
+        public string Image { get; set; }
 
         public List<Maintenance> maintenances { get; set; }
 
