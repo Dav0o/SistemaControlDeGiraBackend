@@ -18,7 +18,7 @@ namespace Repository.Extensions
             public int Id { get; set; }
 
             [Required(ErrorMessage = "El número de placa es obligatorio.")]
-            [MinLength(5), MaxLength(10)]
+            [MinLength(1), MaxLength(10)]
             public string Plate_Number { get; set; }
 
 
@@ -55,7 +55,7 @@ namespace Repository.Extensions
             [DefaultValue(0)]
             public int Mileage { get; set; }
 
-            [RegularExpression("^(super|diesel|regular)$", ErrorMessage = "El tipo de combustible debe ser 'super', 'diesel' o 'regular'.")]
+            [RegularExpression("^(Super|Diesel|Regular|Electrico)$", ErrorMessage = "El tipo de combustible debe ser 'Super', 'Diesel', 'Regular', 'Electrico'.")]
             public string Fuel { get; set; }
 
             [DataType(DataType.Date)]
