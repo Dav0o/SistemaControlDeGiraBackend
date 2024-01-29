@@ -132,6 +132,35 @@ namespace Repository.Extensions
 
 
         }
+
+        public struct DtoUpdateUser
+        {
+            public int Id { get; set; }
+
+            public int DNI { get; set; }
+
+            [Required(ErrorMessage = "El nombre es obligatorio")]
+            [StringLength(50)]
+            public string Name { get; set; }
+
+            [Required(ErrorMessage = "El apellido es obligatorio")]
+            [StringLength(50)]
+            public string LastName1 { get; set; }
+
+
+            public string LastName2 { get; set; }
+
+            [Required]
+            [RegularExpression(@"^[0-9]{8}$", ErrorMessage = "El número de teléfono debe tener 8 dígitos")]
+            public int PhoneNumber { get; set; }
+
+            public int LicenseUNA { get; set; }
+
+            public bool State { get; set; }
+
+            [EmailAddress(ErrorMessage = "Dirección de correo electrónico no válida")]
+            public string Email { get; set; }
+        }
         public class DtoUser
         {
             [EmailAddress(ErrorMessage = "Dirección de correo electrónico no válida")]
@@ -142,6 +171,20 @@ namespace Repository.Extensions
             public string Password { get; set; } = string.Empty;
         }
 
+        public class DtoChangePassword
+        {
+            public string Email { get; set; } = string.Empty;
+            public string OldPassword { get; set; } = string.Empty;
+            public string NewPassword { get; set; } = string.Empty;
+
+        }
+
+        public class DtoUpdatePassword
+        {
+            public byte[] PasswordHash { get; set; }
+            public byte[] PasswordSalt { get; set; }
+        }
+
 
         public static User ToUser(this DtoCreateUser dtoUser)
         {
@@ -149,6 +192,25 @@ namespace Repository.Extensions
             {
                 Id = dtoUser.Id,
                 DNI= dtoUser.DNI,
+                Name = dtoUser.Name,
+                LastName1 = dtoUser.LastName1,
+                LastName2 = dtoUser.LastName2,
+                PhoneNumber = dtoUser.PhoneNumber,
+                LicenseUNA = dtoUser.LicenseUNA,
+                Email = dtoUser.Email,
+                State = dtoUser.State
+
+
+            };
+            return user;
+        }
+
+        public static DtoUpdateUser ToUserUpdate(this DtoUpdateUser dtoUser)
+        {
+            DtoUpdateUser user = new()
+            {
+                Id = dtoUser.Id,
+                DNI = dtoUser.DNI,
                 Name = dtoUser.Name,
                 LastName1 = dtoUser.LastName1,
                 LastName2 = dtoUser.LastName2,

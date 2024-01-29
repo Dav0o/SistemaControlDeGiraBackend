@@ -15,13 +15,15 @@ namespace Repository.IRepository
         
         //Commands
         public Task<User> Create(DtoCreateUser user);
-        public Task Update(DtoCreateUser user);
+        public Task Update(DtoUpdateUser user);
 
         public Task<User> Delete(int id);
 
         public Task<object> Login(DtoUser request);
 
         public Task<User?> UpdateStatus(int id);
+
+        public Task<string> ChangePassword(DtoChangePassword request);
 
         //Queries
         public Task<List<User>> GetAll();

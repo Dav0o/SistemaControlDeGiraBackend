@@ -91,18 +91,16 @@ namespace Repository
             return users;
         }
 
-        public async Task Update(DtoCreateUser request)
+        public async Task Update(DtoUpdateUser request)
         {
-            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+    
+            DtoUpdateUser updateUser;
+            updateUser = request.ToUserUpdate();
 
-            User updateUser;
-            updateUser = request.ToUser();
+            var current = _context.Users.Find(updateUser.Id);
 
-            updateUser.PasswordHash = passwordHash;
-            updateUser.PasswordSalt = passwordSalt;
+            _context.Entry(current).CurrentValues.SetValues(updateUser);
 
-            _context.Users.Attach(updateUser);
-            _context.Entry(updateUser).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
@@ -191,6 +189,31 @@ namespace Repository
             return await _context.Users
                 .Where(u => u.user_Roles.Any(ur => ur.Role.Name == roleName))
                 .ToListAsync();
+        }
+
+        public async Task<string> ChangePassword(DtoChangePassword request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if (VerifyPasswordHash(request.OldPassword, user.PasswordHash, user.PasswordSalt))
+            {
+                CreatePasswordHash(request.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+                DtoUpdatePassword updatePassword = new DtoUpdatePassword();
+
+                updatePassword.PasswordHash = passwordHash;
+                updatePassword.PasswordSalt = passwordSalt;
+
+                _context.Entry(user).CurrentValues.SetValues(updatePassword);
+                await _context.SaveChangesAsync();
+
+                return "Cambio realizado con exito!";
+            }
+
+            return null;
+
+            
+
         }
     }
 }

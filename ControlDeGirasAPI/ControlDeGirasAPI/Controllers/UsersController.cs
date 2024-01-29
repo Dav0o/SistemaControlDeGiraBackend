@@ -66,9 +66,16 @@ namespace ControlDeGirasAPI.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin, AdminTecnico")]
-        public async Task<IActionResult> Update(DtoCreateUser request)
+        public async Task<IActionResult> Update(DtoUpdateUser request)
         {
             await _userRepository.Update(request);
+            return NoContent();
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> ChangePassword(DtoChangePassword request)
+        {
+            await _userRepository.ChangePassword(request);
             return NoContent();
         }
 
