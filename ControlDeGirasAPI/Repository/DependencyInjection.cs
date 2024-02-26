@@ -27,6 +27,7 @@ namespace Repository
             services.AddScoped<IGenericRepository<DriverLog>, GenericRepository<DriverLog>>();
             services.AddScoped<IGenericRepository<RequestDays>, GenericRepository<RequestDays>>();
             services.AddScoped<IGenericRepository<RequestGasoline>, GenericRepository<RequestGasoline>>();
+            services.AddScoped<IGenericRepository<HoursLogDriver>, GenericRepository<HoursLogDriver>>();
 
             return services;
         }

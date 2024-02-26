@@ -558,5 +558,43 @@ namespace Repository.Extensions
         }
         #endregion
 
+        #region HoursLog
+        public struct DtoHoursLog
+        {
+            public int Id { get; set; } 
+            public DateTime workedDay { get; set; }
+
+            public string CategoryHours { get; set; }
+
+            public string Description { get; set; }
+
+            public DateTime InitialHour { get; set; }
+
+            public DateTime FinishHour { get; set; }
+
+            public int DriverLogId { get; set; }
+
+            public int RequestId { get; set; }
+
+        }
+
+        public static HoursLogDriver ToHoursLog(this DtoHoursLog dtohoursLog)
+        {
+            HoursLogDriver newHoursLog = new()
+            {
+                Id = dtohoursLog.Id,
+                workedDay = dtohoursLog.workedDay,
+                CategoryHours = dtohoursLog.CategoryHours,
+                Description = dtohoursLog.Description,
+                InitialHour = dtohoursLog.InitialHour,
+                FinishHour = dtohoursLog.FinishHour,
+                DriverLogId = dtohoursLog.DriverLogId,
+                RequestId = dtohoursLog.RequestId
+
+            };
+            return newHoursLog;
+        }
+        #endregion
+
     }
 }

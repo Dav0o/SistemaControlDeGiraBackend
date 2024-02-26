@@ -59,5 +59,7 @@ namespace DataAccess.Models
         public List<RequestDays>? RequestDays { get; set; }
 
         public List<RequestGasoline>? RequestGasoline { get; set; }
+
+        public List<HoursLogDriver> hoursLogDrivers { get; set; }
     }
 }

@@ -36,6 +36,8 @@ namespace DataAccess.Data
 
         public DbSet<DriverLog> DriverLogs { get; set; }
 
+        public DbSet<HoursLogDriver> HoursLogs { get; set; }
+
         public DbSet<RequestDays> RequestDays { get; set; }
 
         public DbSet<RequestGasoline> RequestGasolines { get; set; }

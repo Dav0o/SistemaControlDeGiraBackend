@@ -48,6 +48,18 @@ namespace Repository
             _context.Entry(requestToEndorse).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
+            var requestedVehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == dtoEndorseRequest.VehicleId);
+
+            if(requestedVehicle != null) 
+            {
+                requestedVehicle.Status = false;
+                _context.Vehicles.Attach(requestedVehicle);
+                _context.Entry(requestedVehicle).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+            }
+            
+
             Process process = new Process();
 
             process.RequestId = requestToEndorse.Id;
@@ -174,6 +186,15 @@ namespace Repository
 
             _context.Processes.Add(process);
             await _context.SaveChangesAsync();
+
+            var requestedVehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == requestToCancel.VehicleId);
+            if (requestedVehicle != null) 
+            {
+                requestedVehicle.Status = true; //porque el carro puede volver a ser solicitado
+                _context.Vehicles.Attach(requestedVehicle);
+                _context.Entry(requestedVehicle).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
         }
 
 
