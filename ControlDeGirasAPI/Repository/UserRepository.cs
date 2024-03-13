@@ -12,11 +12,17 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Mail;
+using System.Diagnostics;
 using static Repository.Extensions.DtoMapping;
+using MimeKit;
+using MailKit.Net.Smtp;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace Repository
 {
@@ -39,7 +45,7 @@ namespace Repository
             {
                 return null;
             }
-                
+
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             User user;
@@ -58,7 +64,7 @@ namespace Repository
         public async Task<object> Login(DtoUser request)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-            if(user == null)
+            if (user == null)
             {
                 return null;
             }
@@ -93,7 +99,7 @@ namespace Repository
 
         public async Task Update(DtoUpdateUser request)
         {
-    
+
             DtoUpdateUser updateUser;
             updateUser = request.ToUserUpdate();
 
@@ -108,8 +114,8 @@ namespace Repository
         private string CreateToken(User user)
         {
             var roles = _context.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.Role.Name).ToList();
-            
-            List<Claim> claims = new List<Claim> 
+
+            List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
@@ -158,7 +164,7 @@ namespace Repository
         public async Task<User?> UpdateStatus(int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (user != null) 
+            if (user != null)
             {
                 user.State = !(user.State);
                 _context.Users.Attach(user);
@@ -212,8 +218,121 @@ namespace Repository
 
             return null;
 
-            
+
 
         }
+
+
+        private string GenerateResetToken()
+        {
+            var resetToken = Guid.NewGuid().ToString();
+
+
+            return resetToken;
+        }
+
+
+
+        public async Task<string> ForgotPassword(DtoForgotPassword request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+
+            if (user == null)
+            {
+                throw new Exception("Usuario no encontrado.");
+            }
+
+            var resetToken = GenerateResetToken();
+
+            user.RefreshToken = resetToken;
+            user.TokenExpires = DateTime.UtcNow.AddHours(1);
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            await SendVerificationEmail(user.Email, resetToken);
+
+            return resetToken;
+        }
+
+
+        public async Task SendVerificationEmail(string userEmail, string resetToken)
+        {
+            try
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("UNA", "prueba070901@gmail.com")); 
+                message.To.Add(new MailboxAddress("", userEmail)); 
+                message.Subject = "Verificación de cambio de contraseña"; 
+
+                message.Body = new TextPart("html")
+                {
+                    Text = $"<p>Para cambiar tu contraseña, haz clic en el siguiente enlace:</p><p><a href='http://localhost:5173/ResetPassword?token={resetToken}'>Cambiar Contraseña</a></p>"
+                };
+
+                using (var client = new SmtpClient())
+                {
+                   
+                    await client.ConnectAsync("smtp.gmail.com", 587, false);
+
+                    await client.AuthenticateAsync("prueba070901@gmail.com", "xduodhjstaezozyo");
+
+                    await client.SendAsync(message);
+
+                    await client.DisconnectAsync(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al enviar el correo electrónico de verificación.", ex);
+            }
+        }
+
+        public async Task<string> ResetPassword(DtoResetPassword request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.RefreshToken == request.ResetToken);
+            if (user == null)
+            {
+                throw new Exception("Token inválido.");
+            }
+
+            if (DateTime.UtcNow > user.TokenExpires)
+            {
+                throw new Exception("El token ha expirado, solicite uno nuevo.");
+            }
+
+            if (request.NewPass != request.ConfirmPassword)
+            {
+                throw new Exception("Las contraseñas no coinciden.");
+            }
+
+            try
+            {
+                user.PasswordHash = null;
+                user.PasswordSalt = null;
+
+                // Crear hash y salt para la nueva contraseña
+                CreatePasswordHash(request.NewPass, out byte[] passwordHash, out byte[] passwordSalt);
+
+                DtoUpdatePassword updatePassword = new DtoUpdatePassword();
+
+                updatePassword.PasswordHash = passwordHash;
+                updatePassword.PasswordSalt = passwordSalt;
+
+
+                _context.Entry(user).CurrentValues.SetValues(updatePassword);
+                await _context.SaveChangesAsync();
+
+
+
+                return "Contraseña restablecida correctamente.";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocurrió un error al restablecer la contraseña. Error: " + ex.Message);
+            }
+        }
     }
-}
+
+      
+    }

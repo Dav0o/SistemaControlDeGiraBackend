@@ -186,6 +186,21 @@ namespace Repository.Extensions
         }
 
 
+
+
+        public class DtoForgotPassword
+        {
+            public string Email { get; set; }
+
+        }
+            public class DtoResetPassword
+            {
+            public string ResetToken { get; set; } = string.Empty;
+            public string NewPass { get; set; } = string.Empty;
+            public string ConfirmPassword { get; set; } = string.Empty;
+
+        }
+
         public static User ToUser(this DtoCreateUser dtoUser)
         {
             User user = new()

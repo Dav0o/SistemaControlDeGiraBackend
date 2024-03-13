@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Repository;
 using Repository.IRepository;
 using static Repository.Extensions.DtoMapping;
@@ -45,6 +46,34 @@ namespace ControlDeGirasAPI.Controllers
 
             return Ok(user);
         }
+
+
+        [HttpPost("forgot")]
+        public async Task<IActionResult> ForgotPassword(DtoForgotPassword request)
+        {
+            try
+            {
+                var resetToken = await _userRepository.ForgotPassword(request);
+                return Ok(new { message = "Token generado correctamente. Usuario encontrado.", resetToken });
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(new { message = "Error al generar el token de restablecimiento de contraseña. Error de base de datos.", error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Error al generar el token de restablecimiento de contraseña.", error = ex.Message });
+            }
+        }
+
+        [HttpPost("resetPassword")]
+        public async Task<IActionResult> ResetPassword(DtoResetPassword request)
+        {
+            await _userRepository.ResetPassword(request);
+            return NoContent();
+        }
+
+
 
         [HttpGet]
         [Authorize(Roles = "Admin, AdminTecnico")]

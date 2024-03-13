@@ -25,6 +25,11 @@ namespace Repository.IRepository
 
         public Task<string> ChangePassword(DtoChangePassword request);
 
+
+       public Task<string> ForgotPassword(DtoForgotPassword request);
+
+       public Task<string> ResetPassword(DtoResetPassword request);
+
         //Queries
         public Task<List<User>> GetAll();
 
