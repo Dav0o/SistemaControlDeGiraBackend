@@ -27,5 +27,7 @@ namespace Repository.IRepository
         public Task<List<Request>> GetAll();
 
         public Task<Request> GetById(int id);
+
+        public Task<List<Request>> GetRequestsByUser(int id);
     }
 }

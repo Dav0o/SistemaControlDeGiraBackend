@@ -3,6 +3,7 @@ using System;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240315183357_NullObservation in request")]
+    partial class NullObservationinrequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,10 +259,10 @@ namespace DataAccess.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Objective")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Observations")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("PersonsAmount")

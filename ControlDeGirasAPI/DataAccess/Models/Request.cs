@@ -8,7 +8,7 @@ namespace DataAccess.Models
 {
     public class Request : BaseEntity
     {
-        public int ConsecutiveNumber { get; set; }
+        public string ConsecutiveNumber { get; set; }
 
         public string ExecutingUnit { get; set; } = "CH";
 
@@ -32,7 +32,7 @@ namespace DataAccess.Models
 
         public string Itinerary { get; set; } = string.Empty;
 
-        public string Observations { get; set; } = string.Empty;
+        public string? Observations { get; set; } = string.Empty;
 
         public string TypeOfVehicle { get; set; } = string.Empty;
 
@@ -61,5 +61,9 @@ namespace DataAccess.Models
         public List<RequestGasoline>? RequestGasoline { get; set; }
 
         public List<HoursLogDriver> hoursLogDrivers { get; set; }
+
+        public int? DriverId { get; set; }
+
+        public User? Driver { get; set; }
     }
 }

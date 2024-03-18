@@ -38,5 +38,7 @@ namespace DataAccess.Models
         public List<Process> Processes { get; set; }
 
         public List<DriverLog>? DriverLogs { get; set; }
+
+        public List<Request>? requests { get; set; }
     }
 }

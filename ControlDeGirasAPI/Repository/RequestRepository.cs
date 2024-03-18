@@ -50,14 +50,14 @@ namespace Repository
 
             var requestedVehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == dtoEndorseRequest.VehicleId);
 
-            if(requestedVehicle != null) 
-            {
-                requestedVehicle.Status = false;
-                _context.Vehicles.Attach(requestedVehicle);
-                _context.Entry(requestedVehicle).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+            //if(requestedVehicle != null) 
+            //{
+            //    requestedVehicle.Status = false;
+            //    _context.Vehicles.Attach(requestedVehicle);
+            //    _context.Entry(requestedVehicle).State = EntityState.Modified;
+            //    await _context.SaveChangesAsync();
 
-            }
+            //}
             
 
             Process process = new Process();
@@ -212,7 +212,7 @@ namespace Repository
 
         public async Task<List<Request>> GetAll()
         {
-            List<Request> requests = await _context.Requests.ToListAsync();
+            List<Request> requests = await _context.Requests.Include("Vehicle").Include("Driver").ToListAsync();
             
             return requests;
         }
@@ -239,8 +239,14 @@ namespace Repository
 
         }
 
-       
+        public async Task<List<Request>> GetRequestsByUser(int id)
+        {
+            var solicitudes = await _context.Requests
+                                       .Include(r => r.Processes)
+                                       .Where(r => r.Processes.Any(r => r.UserId == id && (r.StateId == 3 || r.StateId == 4)))
+                                       .ToListAsync();
 
-
+            return solicitudes;
+        }
     }
 }

@@ -85,7 +85,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, AdminTecnico")]
+        [Authorize(Roles = "Admin, Asistente Administrativo, Chofer, Funcionario Ordinario")]
         public async Task<User> GetById(int id)
         {
             var user = await _userRepository.GetById(id);

@@ -87,5 +87,14 @@ namespace ControlDeGirasAPI.Controllers
             await _requestRepository.Update(request);
             return NoContent();
         }
+
+        [HttpGet("byuser/{id}")]
+        public async Task<List<Request>> GetRequestsByUser(int id)
+        {
+            List<Request> list = await _requestRepository.GetRequestsByUser(id);
+            return list;
+        }
+
+
     }
 }

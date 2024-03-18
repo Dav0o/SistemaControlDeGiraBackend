@@ -328,7 +328,7 @@ namespace Repository.Extensions
         public struct DtoRequestByUser
         {
             public int Id { get; set; }
-            public int ConsecutiveNumber { get; set; }
+            public string ConsecutiveNumber { get; set; }
 
             public string ExecutingUnit { get; set; }
 
@@ -358,6 +358,8 @@ namespace Repository.Extensions
             public string TypeOfVehicle { get; set; }
 
             public bool ItsDriver { get; set; }
+
+            public int? DriverId { get; set; }
         }
 
         public static Request ToRequestByUser(this DtoRequestByUser dtoRequest)
@@ -381,6 +383,7 @@ namespace Repository.Extensions
                 Observations = dtoRequest.Observations,
                 TypeOfVehicle = dtoRequest.TypeOfVehicle,
                 ItsDriver = dtoRequest.ItsDriver,
+                DriverId = dtoRequest.DriverId,
             };
             return newRequest;
         }
@@ -388,7 +391,7 @@ namespace Repository.Extensions
         public struct DtoRequest
         {
             public int Id { get; set; }
-            public int ConsecutiveNumber { get; set; }
+            public string ConsecutiveNumber { get; set; }
 
             public string ExecutingUnit { get; set; }
 
