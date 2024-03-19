@@ -100,7 +100,7 @@ namespace Repository.Extensions
         {
             public int Id { get; set; }
 
-            public int DNI { get; set; }
+            public string DNI { get; set; }
 
             [Required(ErrorMessage = "El nombre es obligatorio")]
             [StringLength(50)]
@@ -137,7 +137,7 @@ namespace Repository.Extensions
         {
             public int Id { get; set; }
 
-            public int DNI { get; set; }
+            public string DNI { get; set; }
 
             [Required(ErrorMessage = "El nombre es obligatorio")]
             [StringLength(50)]
@@ -614,6 +614,34 @@ namespace Repository.Extensions
             return newHoursLog;
         }
         #endregion
+
+        #region Notice
+
+        public struct DtoNotice
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+            public string Body { get; set; }
+            public bool Status { get; set; }
+            public DateTime Date { get; set; }
+
+        }
+
+        public static Notice ToNotice(this DtoNotice dtoNotice)
+        {
+            Notice notice = new()
+            {
+                Id = dtoNotice.Id,
+                Title = dtoNotice.Title,
+                Body = dtoNotice.Body,
+                Status = dtoNotice.Status,
+                Date = dtoNotice.Date
+
+            };
+            return notice;
+        }
+        #endregion
+
 
     }
 }
