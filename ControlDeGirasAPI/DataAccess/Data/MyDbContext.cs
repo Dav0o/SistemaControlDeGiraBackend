@@ -42,6 +42,8 @@ namespace DataAccess.Data
 
         public DbSet<RequestGasoline> RequestGasolines { get; set; }
 
+        public DbSet<Notice> Notices { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Models.Relations;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Repository
 {
@@ -28,7 +29,7 @@ namespace Repository
             services.AddScoped<IGenericRepository<RequestDays>, GenericRepository<RequestDays>>();
             services.AddScoped<IGenericRepository<RequestGasoline>, GenericRepository<RequestGasoline>>();
             services.AddScoped<IGenericRepository<HoursLogDriver>, GenericRepository<HoursLogDriver>>();
-
+            services.AddScoped<IGenericRepository<Notice>, GenericRepository<Notice>>();
             return services;
         }
     }

@@ -10,7 +10,7 @@ namespace DataAccess.Models
     public class User : BaseEntity
     {
         //User info
-        public int DNI { get; set; }
+        public string DNI { get; set; }
         public string Name { get; set; } = string.Empty;
 
         public string LastName1 { get; set; } = string.Empty;
