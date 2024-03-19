@@ -457,6 +457,7 @@ namespace Repository.Extensions
             [Required(ErrorMessage = "El vehiculo es obligatorio")]
             public int? VehicleId { get; set; }
 
+            public int? DriverId { get; set; }
             public bool ItsEndorse { get; set; }
         }
 

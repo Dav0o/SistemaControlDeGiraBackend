@@ -42,6 +42,7 @@ namespace Repository
                 return;
             }
             requestToEndorse.VehicleId = dtoEndorseRequest.VehicleId;
+            requestToEndorse.DriverId = dtoEndorseRequest.DriverId;
             requestToEndorse.ItsEndorse = dtoEndorseRequest.ItsEndorse;
 
             _context.Requests.Attach(requestToEndorse);
@@ -49,16 +50,6 @@ namespace Repository
             await _context.SaveChangesAsync();
 
             var requestedVehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == dtoEndorseRequest.VehicleId);
-
-            //if(requestedVehicle != null) 
-            //{
-            //    requestedVehicle.Status = false;
-            //    _context.Vehicles.Attach(requestedVehicle);
-            //    _context.Entry(requestedVehicle).State = EntityState.Modified;
-            //    await _context.SaveChangesAsync();
-
-            //}
-            
 
             Process process = new Process();
 
@@ -245,6 +236,36 @@ namespace Repository
                                        .Include(r => r.Processes)
                                        .Where(r => r.Processes.Any(r => r.UserId == id && (r.StateId == 3 || r.StateId == 4)))
                                        .ToListAsync();
+
+            return solicitudes;
+        }
+
+        public async Task<List<Request>> GetRequestsToEndorse()
+        {
+            var solicitudes = await _context.Requests
+                .Include(r => r.Processes)
+                .Where(r => r.ItsEndorse == false && r.ItsApprove == false)
+                .ToListAsync();
+
+            return solicitudes;
+        }
+
+        public async Task<List<Request>> GetRequestsToApprove()
+        {
+            var solicitudes = await _context.Requests
+                .Include(r => r.Processes)
+                .Where(r => r.ItsEndorse == true && r.ItsApprove == false && r.ItsCanceled == false)
+                .ToListAsync();
+
+            return solicitudes;
+        }
+
+        public async Task<List<Request>> GetRequestsVerified()
+        {
+            var solicitudes = await _context.Requests
+                .Include(r => r.Processes).Include("Vehicle").Include("Driver")
+                .Where(r => r.ItsEndorse == true && r.ItsApprove == true || r.ItsCanceled == true)
+                .ToListAsync();
 
             return solicitudes;
         }

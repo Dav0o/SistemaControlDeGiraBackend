@@ -29,5 +29,11 @@ namespace Repository.IRepository
         public Task<Request> GetById(int id);
 
         public Task<List<Request>> GetRequestsByUser(int id);
+
+        public Task<List<Request>> GetRequestsToEndorse();
+
+        public Task<List<Request>> GetRequestsToApprove();
+
+        public Task<List<Request>> GetRequestsVerified();
     }
 }

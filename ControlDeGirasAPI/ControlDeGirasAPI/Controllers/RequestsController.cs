@@ -95,6 +95,29 @@ namespace ControlDeGirasAPI.Controllers
             return list;
         }
 
+        [HttpGet("toEndorse")]
+        public async Task<List<Request>> GetRequestsToEndorse()
+        {
+            List<Request> list = await _requestRepository.GetRequestsToEndorse();
+            return list;
+        }
+
+        [HttpGet("toApprove")]
+        public async Task<List<Request>> GetRequestsToApprove()
+        {
+            List<Request> list = await _requestRepository.GetRequestsToApprove();
+            return list;
+        }
+
+        [HttpGet("verified")]
+        public async Task<List<Request>> GetRequestsVerified()
+        {
+            List<Request> list = await _requestRepository.GetRequestsVerified();
+            return list;
+        }
+
+
+
 
     }
 }

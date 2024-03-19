@@ -20,8 +20,8 @@ namespace DataAccess
             services.AddDbContext<MyDbContext>(options =>
             options.UseMySQL(
                 configuration.
-                GetConnectionString("MyDbContext")
-                ?? throw new InvalidOperationException("Connection string 'MyDbContext' not found.")
+                GetConnectionString("AspHost")
+                ?? throw new InvalidOperationException("Connection string 'AspHost' not found.")
                 ));
 
 
