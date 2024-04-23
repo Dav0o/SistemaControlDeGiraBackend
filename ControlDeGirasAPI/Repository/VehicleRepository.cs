@@ -1,5 +1,6 @@
 ﻿using DataAccess.Data;
 using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Internal;
 using Repository.IRepository;
 
@@ -16,6 +17,12 @@ namespace Repository
             _context = context;
         }
 
+        public async Task<List<Vehicle>> GetAllEndorse()
+        {
+            var vehicles = await _context.Vehicles.ToListAsync();
+
+            return vehicles;
+        }
     }
 }
 

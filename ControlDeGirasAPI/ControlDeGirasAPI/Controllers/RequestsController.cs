@@ -19,7 +19,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Funcionario,Coordinador")]
+        [Authorize(Roles = "Admin,Funcionario,Coordinador, Chofer")]
         public async Task<ActionResult<Request>> Create(DtoRequestByUser request)
         {
             Request newRequest = await _requestRepository.Create(request);
@@ -96,6 +96,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpGet("toEndorse")]
+        [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<List<Request>> GetRequestsToEndorse()
         {
             List<Request> list = await _requestRepository.GetRequestsToEndorse();
@@ -103,6 +104,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpGet("toApprove")]
+        [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<List<Request>> GetRequestsToApprove()
         {
             List<Request> list = await _requestRepository.GetRequestsToApprove();
@@ -110,6 +112,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpGet("verified")]
+        [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<List<Request>> GetRequestsVerified()
         {
             List<Request> list = await _requestRepository.GetRequestsVerified();

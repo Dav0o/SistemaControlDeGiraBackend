@@ -234,11 +234,13 @@ namespace Repository
         {
             var solicitudes = await _context.Requests
                                        .Include(r => r.Processes)
-                                       .Where(r => r.Processes.Any(r => r.UserId == id && (r.StateId == 3 || r.StateId == 4)))
+                                       .Where(r => (r.Processes.Any(p => p.UserId == id && p.StateId == 1)))
                                        .ToListAsync();
 
             return solicitudes;
         }
+
+        
 
         public async Task<List<Request>> GetRequestsToEndorse()
         {
@@ -263,7 +265,8 @@ namespace Repository
         public async Task<List<Request>> GetRequestsVerified()
         {
             var solicitudes = await _context.Requests
-                .Include(r => r.Processes).Include("Vehicle").Include("Driver")
+                .Include(r => r.Processes).ThenInclude(p => p.User)
+                .Include("Vehicle").Include("Driver")
                 .Where(r => r.ItsEndorse == true && r.ItsApprove == true || r.ItsCanceled == true)
                 .ToListAsync();
 

@@ -9,12 +9,29 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class BaseDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Notices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(type: "longtext", nullable: false),
+                    Body = table.Column<string>(type: "longtext", nullable: false),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notices", x => x.Id);
+                })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -53,7 +70,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    DNI = table.Column<int>(type: "int", nullable: false),
+                    DNI = table.Column<string>(type: "longtext", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: false),
                     LastName1 = table.Column<string>(type: "longtext", nullable: false),
                     LastName2 = table.Column<string>(type: "longtext", nullable: false),
@@ -190,7 +207,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    ConsecutiveNumber = table.Column<int>(type: "int", nullable: false),
+                    ConsecutiveNumber = table.Column<string>(type: "longtext", nullable: false),
                     ExecutingUnit = table.Column<string>(type: "longtext", nullable: false),
                     TypeRequest = table.Column<string>(type: "longtext", nullable: false),
                     Condition = table.Column<string>(type: "longtext", nullable: false),
@@ -202,7 +219,7 @@ namespace DataAccess.Migrations
                     DepartureLocation = table.Column<string>(type: "longtext", nullable: false),
                     DestinyLocation = table.Column<string>(type: "longtext", nullable: false),
                     Itinerary = table.Column<string>(type: "longtext", nullable: false),
-                    Observations = table.Column<string>(type: "longtext", nullable: false),
+                    Observations = table.Column<string>(type: "longtext", nullable: true),
                     TypeOfVehicle = table.Column<string>(type: "longtext", nullable: false),
                     ItsDriver = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     ItsApprove = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -211,16 +228,55 @@ namespace DataAccess.Migrations
                     InitialMileague = table.Column<int>(type: "int", nullable: false),
                     FinalMileague = table.Column<int>(type: "int", nullable: false),
                     VehicleId = table.Column<int>(type: "int", nullable: true),
+                    DriverId = table.Column<int>(type: "int", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Requests", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Requests_Users_DriverId",
+                        column: x => x.DriverId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Requests_Vehicles_VehicleId",
                         column: x => x.VehicleId,
                         principalTable: "Vehicles",
                         principalColumn: "Id");
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "HoursLogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    workedDay = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CategoryHours = table.Column<string>(type: "longtext", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false),
+                    InitialHour = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    FinishHour = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DriverLogId = table.Column<int>(type: "int", nullable: false),
+                    RequestId = table.Column<int>(type: "int", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HoursLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HoursLogs_DriverLogs_DriverLogId",
+                        column: x => x.DriverLogId,
+                        principalTable: "DriverLogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HoursLogs_Requests_RequestId",
+                        column: x => x.RequestId,
+                        principalTable: "Requests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -329,6 +385,16 @@ namespace DataAccess.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_HoursLogs_DriverLogId",
+                table: "HoursLogs",
+                column: "DriverLogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HoursLogs_RequestId",
+                table: "HoursLogs",
+                column: "RequestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Maintenances_VehicleId",
                 table: "Maintenances",
                 column: "VehicleId");
@@ -359,6 +425,11 @@ namespace DataAccess.Migrations
                 column: "RequestId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Requests_DriverId",
+                table: "Requests",
+                column: "DriverId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Requests_VehicleId",
                 table: "Requests",
                 column: "VehicleId");
@@ -373,10 +444,13 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DriverLogs");
+                name: "HoursLogs");
 
             migrationBuilder.DropTable(
                 name: "Maintenances");
+
+            migrationBuilder.DropTable(
+                name: "Notices");
 
             migrationBuilder.DropTable(
                 name: "Processes");
@@ -389,6 +463,9 @@ namespace DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "DriverLogs");
 
             migrationBuilder.DropTable(
                 name: "States");

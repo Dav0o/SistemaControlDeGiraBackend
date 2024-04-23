@@ -25,7 +25,7 @@ namespace ControlDeGirasAPI.Controllers
         
 
         [HttpPost]
-       // [Authorize(Roles = "Admin, AdminTecnico")]
+        [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<ActionResult<User>> Create(DtoCreateUser request)
         {
             User newUser = await _userRepository.Create(request);
@@ -85,7 +85,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Asistente Administrativo, Chofer, Funcionario Ordinario")]
+        [Authorize(Roles = "Admin, Chofer, Funcionario")]
         public async Task<User> GetById(int id)
         {
             var user = await _userRepository.GetById(id);
@@ -94,7 +94,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, AdminTecnico")]
+        [Authorize(Roles = "Admin, AdminTecnico, Funcionario, Chofer")]
         public async Task<IActionResult> Update(DtoUpdateUser request)
         {
             await _userRepository.Update(request);
@@ -124,6 +124,7 @@ namespace ControlDeGirasAPI.Controllers
 
 
         [HttpGet("usersbyrole/{roleName}")]
+        [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<IActionResult> GetUsersByRole(string roleName)
         {
             var users = await _userRepository.GetByRole(roleName);
