@@ -63,6 +63,11 @@ namespace ControlDeGirasAPI.Controllers
             return _repository.Add(dto.ToHoursLog());
         }
 
+        [HttpDelete]
+        public  void Delete(int id)
+        {
+             _repository.Delete(id);
+        }
     
        
     }

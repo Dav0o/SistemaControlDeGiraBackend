@@ -23,6 +23,12 @@ namespace Repository
 
             return vehicles;
         }
+
+        
+        public bool IsUniquePlate(string plate)
+        {
+            return !_context.Vehicles.Any(v => v.Plate_Number == plate);
+        }
     }
 }
 

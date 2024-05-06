@@ -17,11 +17,12 @@ namespace ControlDeGirasAPI.Controllers
         public readonly IGenericRepository<Vehicle> _vehicleRepository;
         public readonly IVehicleRepository _repository;
 
-        public VehiclesController(IGenericRepository<Vehicle> vehicleRepository)
+        public VehiclesController(IGenericRepository<Vehicle> vehicleRepository, IVehicleRepository repository)
 
         {
 
             _vehicleRepository = vehicleRepository;
+            _repository = repository;
         }
 
 
@@ -48,8 +49,12 @@ namespace ControlDeGirasAPI.Controllers
         // POST api/<VehiclesController>
         [HttpPost]
       
-        public Vehicle Post([FromBody] DtoVehicle vehicle)
+        public ActionResult<Vehicle> Post([FromBody] DtoVehicle vehicle)
         {
+            if (!_repository.IsUniquePlate(vehicle.Plate_Number))
+            {
+                return Conflict("Plate Number already exists");
+            }
             return _vehicleRepository.Add(vehicle.ToVehicle());
         }
 

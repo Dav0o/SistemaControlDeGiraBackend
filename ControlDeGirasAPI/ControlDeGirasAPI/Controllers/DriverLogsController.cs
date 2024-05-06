@@ -52,5 +52,11 @@ namespace ControlDeGirasAPI.Controllers
             _logRepo.Update(request.ToDriverLog());
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            _logRepo.Delete(id);
+        }
     }
 }

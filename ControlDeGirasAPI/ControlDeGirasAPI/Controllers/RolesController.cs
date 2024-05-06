@@ -10,7 +10,7 @@ namespace ControlDeGirasAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin, AdminTecnico")]
+    [Authorize(Roles = "Admin, AdminTecnico")]
     public class RolesController : ControllerBase
     {
         private readonly IRoleRepository _roleRepository;

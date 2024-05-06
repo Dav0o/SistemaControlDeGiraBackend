@@ -11,5 +11,7 @@ namespace Repository.IRepository
     public interface IVehicleRepository : IGenericRepository<Vehicle>
     {
         public Task<List<Vehicle>> GetAllEndorse();
+
+        public bool IsUniquePlate(string plate);
     }
 }
