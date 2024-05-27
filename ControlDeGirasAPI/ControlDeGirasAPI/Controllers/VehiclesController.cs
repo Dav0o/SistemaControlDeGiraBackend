@@ -62,11 +62,17 @@ namespace ControlDeGirasAPI.Controllers
         // PUT api/<VehiclesController>
         [HttpPut("{id}")]
     
-        public IActionResult Update(DtoVehicle request)
+        public ActionResult<Vehicle> Update([FromBody] DtoVehicle vehicle)
         {
-            _vehicleRepository.Update(request.ToVehicle()); 
-            return NoContent();
+            if (!_repository.IsUniquePlate(vehicle.Plate_Number))
+            {
+                return Conflict("Plate Number already exists");
+            }
+
+            return _vehicleRepository.Update(vehicle.ToVehicle()); 
+  
         }
+
 
         // DESHABILITAR api/<VehiclesController>
         [HttpPatch("{id}/disable")]

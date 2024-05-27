@@ -37,5 +37,7 @@ namespace Repository.IRepository
 
         public Task<List<User>> GetByRole(String roleName);
 
+        public bool IsUniqueDNI(string dni);
+
     }
 }

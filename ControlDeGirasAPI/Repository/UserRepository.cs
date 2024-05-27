@@ -267,7 +267,7 @@ namespace Repository
 
                 message.Body = new TextPart("html")
                 {
-                    Text = $"<p>Para cambiar tu contraseña, haz clic en el siguiente enlace:</p><p><a href='http://localhost:5173/ResetPassword?token={resetToken}'>Cambiar Contraseña</a></p>"
+                    Text = $"<p>Para cambiar tu contraseña, haz clic en el siguiente enlace:</p><p><a href='https://sistema-control-de-giras-frontend.vercel.app/ResetPassword?token={resetToken}'>Cambiar Contraseña</a></p>"
                 };
 
                 using (var client = new SmtpClient())
@@ -332,7 +332,11 @@ namespace Repository
                 throw new Exception("Ocurrió un error al restablecer la contraseña. Error: " + ex.Message);
             }
         }
-    }
 
-      
-    }
+        public bool IsUniqueDNI(string dni)
+        {
+            return !_context.Users.Any(u => u.DNI == dni);
+        }
+    }   
+
+}
