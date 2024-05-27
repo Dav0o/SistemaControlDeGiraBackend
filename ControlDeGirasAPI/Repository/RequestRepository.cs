@@ -203,7 +203,7 @@ namespace Repository
 
         public async Task<List<Request>> GetAll()
         {
-            List<Request> requests = await _context.Requests.Include("Vehicle").Include("Driver").ToListAsync();
+            List<Request> requests = await _context.Requests.Include("Vehicle").Include("Driver").Include("Processes").ToListAsync();
             
             return requests;
         }
@@ -240,7 +240,6 @@ namespace Repository
             return solicitudes;
         }
 
-        
 
         public async Task<List<Request>> GetRequestsToEndorse()
         {

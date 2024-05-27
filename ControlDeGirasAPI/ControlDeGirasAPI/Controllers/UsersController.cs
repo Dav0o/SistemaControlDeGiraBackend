@@ -26,9 +26,14 @@ namespace ControlDeGirasAPI.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin, AdminTecnico")]
-        public async Task<ActionResult<User>> Create(DtoCreateUser request)
+        public async Task<ActionResult<User>> Create([FromBody] DtoCreateUser user)
         {
-            User newUser = await _userRepository.Create(request);
+            if (!_userRepository.IsUniqueDNI(user.DNI))
+            {
+                return Conflict("DNI already exists");
+            }
+
+           var newUser = await _userRepository.Create(user);
 
             return Ok(newUser);
         }
@@ -73,8 +78,6 @@ namespace ControlDeGirasAPI.Controllers
             return NoContent();
         }
 
-
-
         [HttpGet]
         [Authorize(Roles = "Admin, AdminTecnico")]
         public async Task<List<User>> GetAll()
@@ -95,11 +98,18 @@ namespace ControlDeGirasAPI.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin, AdminTecnico, Funcionario, Chofer")]
-        public async Task<IActionResult> Update(DtoUpdateUser request)
+        public async Task<IActionResult> Update([FromBody] DtoUpdateUser request)
         {
+
+            if (!_userRepository.IsUniqueDNI(request.DNI))
+            {
+                return Conflict("DNI already exists");
+            }
+
             await _userRepository.Update(request);
             return NoContent();
         }
+
 
         [HttpPatch]
         public async Task<IActionResult> ChangePassword(DtoChangePassword request)
