@@ -1,6 +1,9 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.Data;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Repository;
 using Repository.Internal.IGeneric;
 using Repository.IRepository;
@@ -17,12 +20,14 @@ namespace ControlDeGirasAPI.Controllers
         public readonly IGenericRepository<Vehicle> _vehicleRepository;
         public readonly IVehicleRepository _repository;
 
+
         public VehiclesController(IGenericRepository<Vehicle> vehicleRepository, IVehicleRepository repository)
 
         {
 
             _vehicleRepository = vehicleRepository;
             _repository = repository;
+        
         }
 
 
@@ -61,21 +66,15 @@ namespace ControlDeGirasAPI.Controllers
 
         // PUT api/<VehiclesController>
         [HttpPut("{id}")]
-    
-        public ActionResult<Vehicle> Update([FromBody] DtoVehicle vehicle)
+        public IActionResult Update(DtoVehicle request)
         {
-            if (!_repository.IsUniquePlate(vehicle.Plate_Number))
-            {
-                return Conflict("Plate Number already exists");
+            _vehicleRepository.Update(request.ToVehicle());
+            return NoContent();
+
             }
 
-            return _vehicleRepository.Update(vehicle.ToVehicle()); 
-  
-        }
-
-
-        // DESHABILITAR api/<VehiclesController>
-        [HttpPatch("{id}/disable")]
+            // DESHABILITAR api/<VehiclesController>
+            [HttpPatch("{id}/disable")]
       
         public IActionResult Disable(int id)
         {

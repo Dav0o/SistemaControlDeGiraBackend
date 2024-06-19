@@ -65,5 +65,7 @@ namespace DataAccess.Models
         public int? DriverId { get; set; }
 
         public User? Driver { get; set; }
+
+      
     }
 }

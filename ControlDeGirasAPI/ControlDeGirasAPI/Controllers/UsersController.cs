@@ -98,14 +98,8 @@ namespace ControlDeGirasAPI.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin, AdminTecnico, Funcionario, Chofer")]
-        public async Task<IActionResult> Update([FromBody] DtoUpdateUser request)
+        public async Task<IActionResult> Update(DtoUpdateUser request)
         {
-
-            if (!_userRepository.IsUniqueDNI(request.DNI))
-            {
-                return Conflict("DNI already exists");
-            }
-
             await _userRepository.Update(request);
             return NoContent();
         }

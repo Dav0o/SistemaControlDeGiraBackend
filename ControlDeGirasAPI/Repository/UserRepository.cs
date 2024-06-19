@@ -261,7 +261,7 @@ namespace Repository
             try
             {
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("UNA", "prueba070901@gmail.com")); 
+                message.From.Add(new MailboxAddress("Giras UNA", "controlgirasuna@gmail.com")); 
                 message.To.Add(new MailboxAddress("", userEmail)); 
                 message.Subject = "Verificación de cambio de contraseña"; 
 
@@ -275,7 +275,7 @@ namespace Repository
                    
                     await client.ConnectAsync("smtp.gmail.com", 587, false);
 
-                    await client.AuthenticateAsync("prueba070901@gmail.com", "xduodhjstaezozyo");
+                    await client.AuthenticateAsync("controlgirasuna@gmail.com", "qajiwnnenczqblql");
 
                     await client.SendAsync(message);
 
