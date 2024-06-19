@@ -63,7 +63,7 @@ namespace ControlDeGirasAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Guarda")]
+        [Authorize(Roles = "Admin")]
         public async Task<List<Request>> GetAll()
         {
             List<Request> list = await _requestRepository.GetAll();

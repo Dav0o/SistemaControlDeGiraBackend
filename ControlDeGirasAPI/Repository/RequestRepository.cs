@@ -204,7 +204,7 @@ namespace Repository
         public async Task<List<Request>> GetAll()
         {
             List<Request> requests = await _context.Requests.Include("Vehicle").Include("Driver").Include("Processes").ToListAsync();
-            
+
             return requests;
         }
 
@@ -261,15 +261,18 @@ namespace Repository
             return solicitudes;
         }
 
+      
         public async Task<List<Request>> GetRequestsVerified()
         {
             var solicitudes = await _context.Requests
-                .Include(r => r.Processes).ThenInclude(p => p.User)
+                .Include(r => r.Processes)
                 .Include("Vehicle").Include("Driver")
                 .Where(r => r.ItsEndorse == true && r.ItsApprove == true || r.ItsCanceled == true)
                 .ToListAsync();
 
             return solicitudes;
         }
+
+      
     }
 }
